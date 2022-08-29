@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  datasource:
+    image: mysql:8.0.30-debian
+    restart: always
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB}
+    ports:
+      - ${DB_LOCAL_PORT}:${DB_DOCKER_PORT}
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - datasource
+    ports:
+      - "9000:8080"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  db:
+    name: family-budget-data
+  
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,93 @@
+openapi: '3.0.2'
+
+info:
+  title: Family Budget
+  version: '1.0'
+
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /revenues:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevenuePost"
+      responses:
+        '200':
+          description: "Successfully created Revenue Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenuePost"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+        - trace
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        trace:
+          type: string
+        fieldList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorField"
+    ErrorField:
+      type: object
+      required:
+        - code
+        - message
+        - field
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        field:
+          type: string
+    RevenuePost:
+      type: object
+      required:
+        - "description"
+        - "value"
+        - "date"
+      properties:
+        description:
+          type: string
+          example: "Salary"
+        value:
+          type: number
+          example: 1383.14
+        date:
+          type: string
+          format: date
+  
+  responses:
+    NotFound:
+      description: "Could not find specific Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadRequest:
+      description: "Could not create/update Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Deleted:
+      description: "Successfully deleted Entity"
+    

@@ -9,14 +9,6 @@ spring:
         username: ${DB_USER}
         password: ${DB_ROOT_PASSWORD}
         driver-class-name: ${DB_DRIVER_CLASS_NAME}
-    sql:
-        init:
-            mode: embedded
-            schema-locations: classpath:schema.sql
-            data-locations: classpath:data.sql
-            encoding: 'UTF-8'
-            password: ${DB_ROOT_PASSWORD}
-            username: ${DB_USER}
     mustache:  
         check-template-location: false
         

@@ -17,7 +17,6 @@ spring:
             encoding: 'UTF-8'
             password: ${DB_ROOT_PASSWORD}
             username: ${DB_USER}
-    jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        hibernate.ddl-auto: update
-        open-in-view: false
+    mustache:  
+        check-template-location: false
+        

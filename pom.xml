@@ -35,6 +35,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
 		  <groupId>org.jdbi</groupId>
 		  <artifactId>jdbi3-core</artifactId>
 		</dependency>
@@ -47,10 +51,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!--OPEN API DEPENDENCIES-->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<groupId>org.openapitools</groupId>
+			<artifactId>openapi-generator</artifactId>
+			<version>6.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.3</version>
+		</dependency>
+		<!--OPEN API DEPENDENCIES-->
 	</dependencies>
 
 	<build>
@@ -67,6 +80,44 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!--OPENAPI GENERATOR MAVEN-->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>6.0.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/Family_Budget.yml</inputSpec>
+							<templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<configOptions>
+								<sourceFolder>openapi</sourceFolder>
+								<basePackage>br.com.juliocauan.openapi</basePackage>
+								<apiPackage>br.com.juliocauan.openapi.api</apiPackage>
+								<modelPackage>br.com.juliocauan.openapi.model</modelPackage>
+								<performBeanValidation>false</performBeanValidation>
+								<openApiNullable>true</openApiNullable>
+								<skipDefaultInterface>true</skipDefaultInterface>
+								<interfaceOnly>true</interfaceOnly>
+								<generateSupportingFiles>false</generateSupportingFiles>
+								<delegatePattern>true</delegatePattern>
+								<documentationProvider>none</documentationProvider>
+							</configOptions>
+							<typeMappings>
+								<typeMapping>RevenuePage=Page&lt;RevenueGET&gt;</typeMapping>
+							</typeMappings>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--OPENAPI GENERATOR MAVEN-->
+
 		</plugins>
 	</build>
 

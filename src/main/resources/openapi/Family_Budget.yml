@@ -7,22 +7,28 @@ info:
 servers:
   - url: http://localhost:8000
 
+tags:
+  - name: Revenue
+
 paths:
   /revenues:
     post:
+      tags:
+        - "Revenue"
+      operationId: postRevenue
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RevenuePost"
+              $ref: "#/components/schemas/RevenuePOST"
       responses:
         '200':
           description: "Successfully created Revenue Entity"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RevenuePost"
+                $ref: "#/components/schemas/RevenueGET"
         '400':
           $ref: "#/components/responses/BadRequest"
 
@@ -58,7 +64,30 @@ components:
           type: string
         field:
           type: string
-    RevenuePost:
+    Page:
+      type: object
+      properties:
+        page:
+          type: integer
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+
+    RevenuePage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/RevenueGET"
+        page:
+          $ref: "#/components/schemas/Page"
+    RevenuePOST:
       type: object
       required:
         - "description"
@@ -74,6 +103,24 @@ components:
         date:
           type: string
           format: date
+    RevenueGET:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/IntegerId"
+        description:
+          type: string
+          example: "Salary"
+        value:
+          type: number
+          example: 1383.14
+        date:
+          type: string
+          format: date
+    
+    IntegerId:
+      type: integer
+      format: int32
   
   responses:
     NotFound:

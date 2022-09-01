@@ -1,5 +1,7 @@
 package br.com.juliocauan.familybudget.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,12 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<RevenueGET> _postRevenue(@Valid RevenuePOST revenuePOST) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<RevenueGET>> _getAllRevenues() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -12,6 +12,19 @@ tags:
 
 paths:
   /revenues:
+    get:
+      tags:
+        - "Revenue"
+      operationId: getAllRevenues
+      responses:
+        '200':
+          description: "Successfully found all Revenue Entities"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RevenueGET"
     post:
       tags:
         - "Revenue"
@@ -106,8 +119,6 @@ components:
     RevenueGET:
       type: object
       properties:
-        id:
-          $ref: "#/components/schemas/IntegerId"
         description:
           type: string
           example: "Salary"

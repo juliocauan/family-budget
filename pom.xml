@@ -47,6 +47,14 @@
 		  <artifactId>jdbi3-spring5</artifactId>
 		</dependency>
 		<dependency>
+		  <groupId>org.jdbi</groupId>
+		  <artifactId>jdbi3-postgres</artifactId>
+		</dependency>
+		<dependency>
+		  <groupId>org.jdbi</groupId>
+		  <artifactId>jdbi3-sqlobject</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>

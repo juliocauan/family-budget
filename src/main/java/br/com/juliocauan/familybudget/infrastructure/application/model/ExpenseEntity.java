@@ -1,5 +1,6 @@
 package br.com.juliocauan.familybudget.infrastructure.application.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -21,7 +22,7 @@ public class ExpenseEntity implements Expense{
     private String description;
 
     @NonNull
-    private Float value;
+    private BigDecimal value;
 
     @NonNull
     private Date date;

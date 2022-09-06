@@ -19,9 +19,10 @@ import br.com.juliocauan.openapi.model.RevenuePOST;
 public class RevenuesController implements RevenuesApi{
 
     @Override
-    public ResponseEntity<RevenueGET> _postRevenue(@Valid RevenuePOST revenuePOST) {
-        // TODO Auto-generated method stub
-        return null;
+    public ResponseEntity<Void> _postRevenue(@Valid RevenuePOST revenuePOST) {
+        RevenueEntityDAO revenueDao = new RevenueEntityDAO();
+        revenueDao.save(dtoToEntity(revenuePOST));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
@@ -38,6 +39,14 @@ public class RevenuesController implements RevenuesApi{
             .description(entity.getDescription())
             .value(entity.getValue())
             .date(entity.getIncomeDate());
+    }
+
+    private RevenueEntity dtoToEntity(RevenuePOST dto){
+        return RevenueEntity.builder()
+            .description(dto.getDescription())
+            .value(dto.getValue())
+            .incomeDate(dto.getDate())
+            .build();
     }
     
 }

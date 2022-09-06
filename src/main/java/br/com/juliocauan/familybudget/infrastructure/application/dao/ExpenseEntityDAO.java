@@ -13,4 +13,10 @@ public class ExpenseEntityDAO implements ExpenseDAO{
         return null;
     }
 
+    @Override
+    public void save(Expense entity) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface BaseDAO<E>{
     List<? extends E> getAll();
+    void save(E entity);
 }

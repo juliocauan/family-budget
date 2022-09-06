@@ -1,4 +1,4 @@
-package br.com.juliocauan.familybudget.infrastructure.application.handler;
+package br.com.juliocauan.familybudget.infrastructure.handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.juliocauan.familybudget.infrastructure.application.handler.exception.SQLConnectionException;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 import br.com.juliocauan.openapi.model.Error;
 import br.com.juliocauan.openapi.model.ErrorField;
 
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     
     @ExceptionHandler(SQLConnectionException.class)
-    public ResponseEntity<Object> sqlConnectionError(SQLConnectionException ex){
+    public ResponseEntity<Object> sqlError(SQLConnectionException ex){
         responseError = init(401, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }

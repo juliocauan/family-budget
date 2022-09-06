@@ -25,5 +25,5 @@ public class RevenueEntity implements Revenue{
     private BigDecimal value;
 
     @NonNull
-    private Date date;
+    private Date incomeDate;
 }

@@ -1,11 +1,11 @@
-package br.com.juliocauan.familybudget.infrastructure.application.repository;
+package br.com.juliocauan.familybudget.infrastructure.datasource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
-import br.com.juliocauan.familybudget.infrastructure.application.handler.exception.SQLConnectionException;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 
 public class DBCPDataSource {
     

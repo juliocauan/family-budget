@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.application.repository.DBCPDataSource;
+import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
 import br.com.juliocauan.openapi.api.RevenuesApi;
 import br.com.juliocauan.openapi.model.RevenueGET;
 import br.com.juliocauan.openapi.model.RevenuePOST;

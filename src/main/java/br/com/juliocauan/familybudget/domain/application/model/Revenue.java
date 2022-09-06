@@ -6,5 +6,5 @@ import java.util.Date;
 public interface Revenue {
     String getDescription();
     BigDecimal getValue();
-    Date getDate();
+    Date getIncomeDate();
 }

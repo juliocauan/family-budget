@@ -1,4 +1,4 @@
-package br.com.juliocauan.familybudget.infrastructure.application.handler.exception;
+package br.com.juliocauan.familybudget.infrastructure.handler.exception;
 
 import java.sql.SQLException;
 

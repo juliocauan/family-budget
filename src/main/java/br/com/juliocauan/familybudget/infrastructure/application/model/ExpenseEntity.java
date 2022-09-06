@@ -25,5 +25,5 @@ public class ExpenseEntity implements Expense{
     private BigDecimal value;
 
     @NonNull
-    private Date date;
+    private Date outcomeDate;
 }

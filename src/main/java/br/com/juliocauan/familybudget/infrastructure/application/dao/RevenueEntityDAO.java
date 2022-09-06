@@ -8,35 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.juliocauan.familybudget.domain.application.dao.RevenueDAO;
-import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
-import br.com.juliocauan.openapi.model.RevenueGET;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 
 public class RevenueEntityDAO implements RevenueDAO{
 
     @Override
-    public List<Revenue> getAll() {
+    public List<RevenueEntity> getAll() {
         Connection connection = DBCPDataSource.getConnection();
         List<RevenueEntity> response = new ArrayList<>();
         String sql = "SELECT description, value, income_date FROM revenues";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.execute();
             ResultSet rst = statement.getResultSet();
-            RevenueGET revenue;
-            
             while(rst.next()){
-                revenue = new RevenueGET();
-                revenue
-                    .description(rst.getString("DESCRIPTION"))
-                    .value(rst.getBigDecimal("VALUE"))
-                    .date(rst.getDate("DAY").toLocalDate());
+                RevenueEntity revenue = RevenueEntity.builder()
+                    .description(rst.getString(1))
+                    .value(rst.getBigDecimal(2))
+                    .incomeDate(rst.getDate(3))
+                    .build();
+                response.add(revenue);
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return response;
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
         }
-        return null;
     }
 
 }

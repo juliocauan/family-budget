@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NonNull;
 
 @Data @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor @NoArgsConstructor
+@Builder
 public class RevenueEntity extends Revenue{
 
     @Id

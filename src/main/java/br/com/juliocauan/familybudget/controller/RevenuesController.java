@@ -1,9 +1,6 @@
 package br.com.juliocauan.familybudget.controller;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
+import br.com.juliocauan.familybudget.infrastructure.application.dao.RevenueEntityDAO;
+import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.openapi.api.RevenuesApi;
 import br.com.juliocauan.openapi.model.RevenueGET;
 import br.com.juliocauan.openapi.model.RevenuePOST;
@@ -29,31 +27,18 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<List<RevenueGET>> _getAllRevenues() {
-        // TODO Auto-generated method stub
-        Connection connection = DBCPDataSource.getConnection();
-        try {
-            Statement statement = connection.createStatement();
-            statement.execute("SELECT * FROM revenues");
-            ResultSet rst = statement.getResultSet();
-            List<RevenueGET> response = new ArrayList<>();
-            RevenueGET revenue;
-            
-            while(rst.next()){
-                revenue = new RevenueGET();
-                revenue
-                    .description(rst.getString("DESCRIPTION"))
-                    .value(rst.getBigDecimal("VALUE"))
-                    .date(rst.getDate("DAY").toLocalDate());
-                response.add(revenue);
-            }
-            connection.close();
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+        RevenueEntityDAO revenueDAO = new RevenueEntityDAO();
+        List<RevenueEntity> list = revenueDAO.getAll();
+        List<RevenueGET> response = new ArrayList<>();
+        list.forEach(revenue -> response.add(entityToDto(revenue)));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        
+    private RevenueGET entityToDto(RevenueEntity entity){
+        return new RevenueGET()
+            .description(entity.getDescription())
+            .value(entity.getValue())
+            .date(null);
     }
     
 }

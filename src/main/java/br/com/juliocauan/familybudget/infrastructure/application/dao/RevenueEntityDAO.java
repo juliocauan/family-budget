@@ -14,9 +14,14 @@ import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnec
 
 public class RevenueEntityDAO implements RevenueDAO{
 
+    private Connection connection;
+
+    public RevenueEntityDAO() {
+        this.connection = DBCPDataSource.getConnection();
+    }
+
     @Override
     public List<RevenueEntity> getAll() {
-        Connection connection = DBCPDataSource.getConnection();
         List<RevenueEntity> response = new ArrayList<>();
         String sql = "SELECT description, value, income_date FROM revenues";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

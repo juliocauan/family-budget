@@ -1,6 +1,5 @@
 package br.com.juliocauan.familybudget.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class RevenuesController implements RevenuesApi{
         return new RevenueGET()
             .description(entity.getDescription())
             .value(entity.getValue())
-            .date(null);
+            .date(entity.getIncomeDate());
     }
     
 }

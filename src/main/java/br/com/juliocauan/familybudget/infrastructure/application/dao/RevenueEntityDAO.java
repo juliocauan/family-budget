@@ -31,7 +31,7 @@ public class RevenueEntityDAO implements RevenueDAO{
                 RevenueEntity revenue = RevenueEntity.builder()
                     .description(rst.getString(1))
                     .value(rst.getBigDecimal(2))
-                    .incomeDate(rst.getDate(3))
+                    .incomeDate(rst.getDate(3).toLocalDate())
                     .build();
                 response.add(revenue);
             }

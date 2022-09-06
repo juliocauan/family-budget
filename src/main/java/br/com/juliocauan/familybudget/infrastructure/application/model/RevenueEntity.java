@@ -1,7 +1,7 @@
 package br.com.juliocauan.familybudget.infrastructure.application.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
 
@@ -28,6 +28,6 @@ public class RevenueEntity extends Revenue{
     private BigDecimal value;
 
     @NonNull
-    private Date incomeDate;
+    private LocalDate incomeDate;
     
 }

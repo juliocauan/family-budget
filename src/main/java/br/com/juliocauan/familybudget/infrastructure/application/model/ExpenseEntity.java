@@ -8,12 +8,13 @@ import org.springframework.data.annotation.Id;
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@Data
+@Data @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor @NoArgsConstructor
-public class ExpenseEntity implements Expense{
+public class ExpenseEntity extends Expense{
 
     @Id
     private Integer id;
@@ -26,4 +27,5 @@ public class ExpenseEntity implements Expense{
 
     @NonNull
     private Date outcomeDate;
+    
 }

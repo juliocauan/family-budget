@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.application.repository.ConnectionFactory;
+import br.com.juliocauan.familybudget.infrastructure.application.repository.DBCPDataSource;
 import br.com.juliocauan.openapi.api.RevenuesApi;
 import br.com.juliocauan.openapi.model.RevenueGET;
 import br.com.juliocauan.openapi.model.RevenuePOST;
@@ -30,14 +30,14 @@ public class RevenuesController implements RevenuesApi{
     @Override
     public ResponseEntity<List<RevenueGET>> _getAllRevenues() {
         // TODO Auto-generated method stub
-        Connection connection = ConnectionFactory.getConnection();
+        Connection connection = DBCPDataSource.getConnection();
         try {
-            
             Statement statement = connection.createStatement();
             statement.execute("SELECT * FROM revenues");
             ResultSet rst = statement.getResultSet();
             List<RevenueGET> response = new ArrayList<>();
             RevenueGET revenue;
+            
             while(rst.next()){
                 revenue = new RevenueGET();
                 revenue
@@ -46,6 +46,7 @@ public class RevenuesController implements RevenuesApi{
                     .date(rst.getDate("DAY").toLocalDate());
                 response.add(revenue);
             }
+            connection.close();
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (SQLException e) {

@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.juliocauan.familybudget.domain.application.dao.ExpenseDAO;
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
 
-public class ExpenseEntityDAO implements ExpenseDAO{
+public final class ExpenseEntityDAO extends ExpenseDAO{
 
     @Override
     public List<Expense> getAll() {

@@ -40,6 +40,26 @@ paths:
           description: "Successfully created Revenue Entity"
         '400':
           $ref: "#/components/responses/BadRequest"
+  /revenues/{revenueId}:
+    get:
+      tags:
+        - "Revenue"
+      operationId: getRevenue
+      parameters:
+        - name: revenueId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/RevenueId"
+      responses:
+        '200':
+          description: "Successfully found Revenue Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueGET"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
 components:
   schemas:
@@ -125,6 +145,8 @@ components:
           type: string
           format: date
     
+    RevenueId:
+      $ref: "#/components/schemas/IntegerId"
     IntegerId:
       type: integer
       format: int32

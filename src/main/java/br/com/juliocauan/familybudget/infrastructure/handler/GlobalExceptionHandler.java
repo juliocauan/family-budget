@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 import br.com.juliocauan.openapi.model.Error;
 import br.com.juliocauan.openapi.model.ErrorField;
@@ -29,6 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private String stackTraceString(StackTraceElement[] elements){
         return org.apache.commons.lang3.StringUtils.join(elements, "\n");
+    }
+    
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> notFoundError(NotFoundException ex){
+        responseError = init(301, ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
     }
     
     @ExceptionHandler(SQLConnectionException.class)

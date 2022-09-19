@@ -14,13 +14,15 @@ import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 
-public final class RevenueEntityDAO extends RevenueDAO{
+public final class RevenueEntityDAO extends RevenueDAO<Integer>{
 
     private Connection connection;
     private final String duplicateErrorMessage = "Revenue duplicate: Same description in the same month!";
     private final String table = "revenues";
+    private final String revenue_id = "id";
     private final String description = "description";
     private final String value = "value";
     private final String date = "income_date";
@@ -44,6 +46,24 @@ public final class RevenueEntityDAO extends RevenueDAO{
                     .build();
                 response.add(revenue);
             }
+            return response;
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
+    }
+
+    @Override
+    public RevenueEntity findOne(Integer id) {
+        String sql = String.format("SELECT %s, %s, %s FROM %s WHERE %s = %d", description, value, date, table, revenue_id, id);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.executeQuery();
+            ResultSet rst = statement.getResultSet();
+            if(!rst.next()) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
+            RevenueEntity response = RevenueEntity.builder()
+                .description(rst.getString(1))
+                .value(rst.getBigDecimal(2))
+                .incomeDate(rst.getDate(3).toLocalDate())
+                .build();
             return response;
         } catch (SQLException ex) {
             throw new SQLConnectionException(ex);

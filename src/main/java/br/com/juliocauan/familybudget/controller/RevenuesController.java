@@ -34,6 +34,14 @@ public class RevenuesController implements RevenuesApi{
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Override
+    public ResponseEntity<RevenueGET> _getRevenue(Integer revenueId) {
+        RevenueEntityDAO revenueDAO = new RevenueEntityDAO();
+        RevenueEntity entity = revenueDAO.findOne(revenueId);
+        RevenueGET response = entityToDto(entity);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     private RevenueGET entityToDto(RevenueEntity entity){
         return new RevenueGET()
             .description(entity.getDescription())

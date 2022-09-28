@@ -60,6 +60,23 @@ paths:
                 $ref: "#/components/schemas/RevenueGET"
         '404':
           $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - "Revenue"
+      operationId: updateRevenue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevenuePOST"
+      responses:
+        '200':
+          description: "Successfully updated Revenue Entity"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
 components:
   schemas:

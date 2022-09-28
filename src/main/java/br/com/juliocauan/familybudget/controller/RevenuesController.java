@@ -42,6 +42,12 @@ public class RevenuesController implements RevenuesApi{
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Override
+    public ResponseEntity<RevenueGET> _updateRevenue(Integer revenueId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     private RevenueGET entityToDto(RevenueEntity entity){
         return new RevenueGET()
             .description(entity.getDescription())

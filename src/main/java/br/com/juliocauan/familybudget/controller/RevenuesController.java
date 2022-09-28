@@ -43,7 +43,7 @@ public class RevenuesController implements RevenuesApi{
     }
 
     @Override
-    public ResponseEntity<RevenueGET> _updateRevenue(Integer revenueId) {
+    public ResponseEntity<Void> _updateRevenue(Integer revenueId, @Valid RevenuePOST revenuePOST) {
         // TODO Auto-generated method stub
         return null;
     }

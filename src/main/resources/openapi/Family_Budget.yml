@@ -64,6 +64,12 @@ paths:
       tags:
         - "Revenue"
       operationId: updateRevenue
+      parameters:
+        - name: revenueId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/RevenueId"
       requestBody:
         required: true
         content:

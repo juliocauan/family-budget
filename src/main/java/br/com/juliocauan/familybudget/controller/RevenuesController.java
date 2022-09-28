@@ -42,9 +42,12 @@ public class RevenuesController implements RevenuesApi{
     }
 
     @Override
-    public ResponseEntity<Void> _updateRevenue(Integer revenueId, @Valid RevenueDTO revenuePOST) {
-        // TODO Auto-generated method stub
-        return null;
+    public ResponseEntity<Void> _updateRevenue(Integer revenueId, @Valid RevenueDTO revenuePUT) {
+        RevenueEntityDAO revenueDAO = new RevenueEntityDAO();
+        RevenueEntity oldEntity = revenueDAO.findOne(revenueId);
+        RevenueEntity newEntity = dtoToEntity(revenuePUT);
+        revenueDAO.update(oldEntity.getId(), newEntity);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     private RevenueDTO entityToDto(RevenueEntity entity){

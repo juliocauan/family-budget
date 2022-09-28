@@ -20,6 +20,7 @@ import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnec
 public final class RevenueEntityDAO extends RevenueDAO<Integer>{
 
     private Connection connection;
+
     private final String duplicateErrorMessage = "Revenue duplicate: Same description in the same month!";
     private final String table = "revenues";
     private final String revenue_id = "id";
@@ -60,6 +61,7 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
             ResultSet rst = statement.getResultSet();
             if(!rst.next()) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
             RevenueEntity response = RevenueEntity.builder()
+                .id(id)
                 .description(rst.getString(1))
                 .value(rst.getBigDecimal(2))
                 .incomeDate(rst.getDate(3).toLocalDate())
@@ -80,6 +82,23 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
             statement.setBigDecimal(2, entity.getValue());
             statement.setDate(3, Date.valueOf(entity.getIncomeDate()));
             statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
+    }
+
+    @Override
+    public void update(Integer oldEntityId, Revenue newEntity) {
+        if(isDuplicated(newEntity)) throw new DuplicatedEntityException(duplicateErrorMessage);
+        String sql = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?" +
+                                    "WHERE %s = %d", table, description, value, date, revenue_id, oldEntityId);
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, newEntity.getDescription());
+            statement.setBigDecimal(2, newEntity.getValue());
+            statement.setDate(3, Date.valueOf(newEntity.getIncomeDate()));
+            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", oldEntityId));
 
         } catch (SQLException ex) {
             throw new SQLConnectionException(ex);

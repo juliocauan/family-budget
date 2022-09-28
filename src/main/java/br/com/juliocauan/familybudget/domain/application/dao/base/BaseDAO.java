@@ -6,4 +6,5 @@ public interface BaseDAO<E, ID>{
     List<? extends E> getAll();
     void save(E entity);
     E findOne(ID id);
+    void update(ID oldEntityId, E newEntity);
 }

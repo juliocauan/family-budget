@@ -25,4 +25,10 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
         return null;
     }
 
+    @Override
+    public void update(Integer oldEntityId, Expense newEntity) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

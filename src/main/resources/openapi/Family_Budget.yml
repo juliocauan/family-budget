@@ -24,7 +24,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/RevenueGET"
+                  $ref: "#/components/schemas/RevenueDTO"
     post:
       tags:
         - "Revenue"
@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RevenuePOST"
+              $ref: "#/components/schemas/RevenueDTO"
       responses:
         '201':
           description: "Successfully created Revenue Entity"
@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RevenueGET"
+                $ref: "#/components/schemas/RevenueDTO"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
@@ -75,7 +75,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RevenuePOST"
+              $ref: "#/components/schemas/RevenueDTO"
       responses:
         '200':
           description: "Successfully updated Revenue Entity"
@@ -136,27 +136,15 @@ components:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/RevenueGET"
+            $ref: "#/components/schemas/RevenueDTO"
         page:
           $ref: "#/components/schemas/Page"
-    RevenuePOST:
+    RevenueDTO:
       type: object
       required:
         - "description"
         - "value"
         - "date"
-      properties:
-        description:
-          type: string
-          example: "Salary"
-        value:
-          type: number
-          example: 1383.14
-        date:
-          type: string
-          format: date
-    RevenueGET:
-      type: object
       properties:
         description:
           type: string

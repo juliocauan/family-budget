@@ -83,6 +83,22 @@ paths:
           $ref: "#/components/responses/BadRequest"
         '404':
           $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "Revenue"
+      operationId: deleteRevenue
+      parameters:
+        - name: revenueId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/RevenueId"
+      responses:
+        '200':
+          description: "Successfully removed Revenue Entity"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
 
 components:
   schemas:

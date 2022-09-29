@@ -50,6 +50,12 @@ public class RevenuesController implements RevenuesApi{
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Override
+    public ResponseEntity<Void> _deleteRevenue(Integer revenueId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     private RevenueDTO entityToDto(RevenueEntity entity){
         return new RevenueDTO()
             .description(entity.getDescription())

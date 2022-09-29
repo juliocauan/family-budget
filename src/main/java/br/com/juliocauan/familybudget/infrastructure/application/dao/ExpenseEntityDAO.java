@@ -31,4 +31,10 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
         
     }
 
+    @Override
+    public void delete(Integer id) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

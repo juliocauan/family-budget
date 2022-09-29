@@ -52,8 +52,9 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<Void> _deleteRevenue(Integer revenueId) {
-        // TODO Auto-generated method stub
-        return null;
+        RevenueEntityDAO revenueDAO = new RevenueEntityDAO();
+        revenueDAO.delete(revenueId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     private RevenueDTO entityToDto(RevenueEntity entity){

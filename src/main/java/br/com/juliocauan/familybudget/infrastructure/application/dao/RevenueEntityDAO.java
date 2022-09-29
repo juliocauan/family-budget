@@ -106,6 +106,19 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
     }
 
     @Override
+    public void delete(Integer id) {
+        String sql = String.format("DELETE FROM %s " +
+                                    "WHERE %s = %d", table, revenue_id, id);
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
+
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
+    }
+
+    @Override
     protected Boolean isDuplicated(Revenue entity) {
         String sql = String.format("SELECT * FROM %s" + 
                                     " WHERE %s = ?" +

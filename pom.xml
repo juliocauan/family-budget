@@ -106,9 +106,6 @@
 								<delegatePattern>true</delegatePattern>
 								<documentationProvider>none</documentationProvider>
 							</configOptions>
-							<typeMappings>
-								<typeMapping>RevenuePage=Page&lt;RevenueGET&gt;</typeMapping>
-							</typeMappings>
 						</configuration>
 					</execution>
 				</executions>

@@ -9,6 +9,7 @@ servers:
 
 tags:
   - name: Revenue
+  - name: Expense
 
 paths:
   /revenues:
@@ -40,6 +41,7 @@ paths:
           description: "Successfully created Revenue Entity"
         '400':
           $ref: "#/components/responses/BadRequest"
+  
   /revenues/{revenueId}:
     get:
       tags:
@@ -99,7 +101,23 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
 
-
+  /expenses:
+    post:
+      tags:
+        - "Expense"
+      operationId: postExpense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseDTO"
+      responses:
+        '201':
+          description: "Successfully created Expense Entity"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+  
 components:
   schemas:
     Error:
@@ -132,29 +150,7 @@ components:
           type: string
         field:
           type: string
-    Page:
-      type: object
-      properties:
-        page:
-          type: integer
-        numberOfElements:
-          type: integer
-        size:
-          type: integer
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-
-    RevenuePage:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/RevenueDTO"
-        page:
-          $ref: "#/components/schemas/Page"
+    
     RevenueDTO:
       type: object
       required:
@@ -172,7 +168,26 @@ components:
           type: string
           format: date
     
+    ExpenseDTO:
+      type: object
+      required:
+        - "description"
+        - "value"
+        - "date"
+      properties:
+        description:
+          type: string
+          example: "Gym"
+        value:
+          type: number
+          example: 131.41
+        date:
+          type: string
+          format: date
+
     RevenueId:
+      $ref: "#/components/schemas/IntegerId"
+    ExpenseId:
       $ref: "#/components/schemas/IntegerId"
     IntegerId:
       type: integer

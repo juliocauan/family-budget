@@ -45,13 +45,14 @@ public class ExpensesController implements ExpensesApi{
         ExpenseEntity oldEntity = expenseDAO.findOne(expenseId);
         ExpenseEntity newEntity = dtoToEntity(expenseDTO);
         expenseDAO.update(oldEntity.getId(), newEntity);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Override
     public ResponseEntity<Void> _deleteExpense(Integer expenseId) {
-        // TODO Auto-generated method stub
-        return null;
+        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
+        expenseDAO.delete(expenseId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     private ExpenseDTO entityToDto(ExpenseEntity entity){

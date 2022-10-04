@@ -107,8 +107,15 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
 
     @Override
     public void delete(Integer id) {
-        // TODO Auto-generated method stub
-        
+        String sql = String.format("DELETE FROM %s " +
+                                    "WHERE %s = %d", table, expense_id, id);
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find EXPENSE with ID %s", id));
+
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
     }
 
     @Override

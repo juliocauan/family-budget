@@ -131,6 +131,65 @@ paths:
         '400':
           $ref: "#/components/responses/BadRequest"
   
+  /expenses/{expenseId}:
+    get:
+      tags:
+        - "Expense"
+      operationId: getExpense
+      parameters:
+        - name: expenseId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/ExpenseId"
+      responses:
+        '200':
+          description: "Successfully found Expense Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpenseDTO"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - "Expense"
+      operationId: updateExpense
+      parameters:
+        - name: expenseId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/ExpenseId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseDTO"
+      responses:
+        '200':
+          description: "Successfully updated Expense Entity"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "Expense"
+      operationId: deleteExpense
+      parameters:
+        - name: expenseId
+          required: true
+          in: path
+          schema:
+            $ref: "#/components/schemas/ExpenseId"
+      responses:
+        '200':
+          description: "Successfully removed Expense Entity"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
 components:
   schemas:
     Error:

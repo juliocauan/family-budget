@@ -31,6 +31,24 @@ public class ExpensesController implements ExpensesApi{
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
+    public ResponseEntity<ExpenseDTO> _getExpense(Integer expenseId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpenseDTO expenseDTO) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> _deleteExpense(Integer expenseId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     private ExpenseDTO entityToDto(ExpenseEntity entity){
         return new ExpenseDTO()
             .description(entity.getDescription())

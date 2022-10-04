@@ -1,5 +1,7 @@
 package br.com.juliocauan.familybudget.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,12 @@ import br.com.juliocauan.openapi.api.ExpensesApi;
 import br.com.juliocauan.openapi.model.ExpenseDTO;
 
 public class ExpensesController implements ExpensesApi{
+
+    @Override
+    public ResponseEntity<List<ExpenseDTO>> _getAllExpenses() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public ResponseEntity<Void> _postExpense(@Valid ExpenseDTO expenseDTO) {

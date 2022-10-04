@@ -14,6 +14,7 @@ import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 
 public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
@@ -69,9 +70,22 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
     }
 
     @Override
-    public Expense findOne(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+    public ExpenseEntity findOne(Integer id) {
+        String sql = String.format("SELECT %s, %s, %s FROM %s WHERE %s = %d", description, value, date, table, expense_id, id);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.executeQuery();
+            ResultSet rst = statement.getResultSet();
+            if(!rst.next()) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
+            ExpenseEntity response = ExpenseEntity.builder()
+                .id(id)
+                .description(rst.getString(1))
+                .value(rst.getBigDecimal(2))
+                .outcomeDate(rst.getDate(3).toLocalDate())
+                .build();
+            return response;
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
     }
 
     @Override

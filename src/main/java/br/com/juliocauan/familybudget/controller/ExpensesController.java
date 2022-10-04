@@ -41,8 +41,11 @@ public class ExpensesController implements ExpensesApi{
 
     @Override
     public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpenseDTO expenseDTO) {
-        // TODO Auto-generated method stub
-        return null;
+        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
+        ExpenseEntity oldEntity = expenseDAO.findOne(expenseId);
+        ExpenseEntity newEntity = dtoToEntity(expenseDTO);
+        expenseDAO.update(oldEntity.getId(), newEntity);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override

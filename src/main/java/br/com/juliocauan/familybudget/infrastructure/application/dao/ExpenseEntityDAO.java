@@ -90,8 +90,19 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
 
     @Override
     public void update(Integer oldEntityId, Expense newEntity) {
-        // TODO Auto-generated method stub
-        
+        if(isDuplicated(newEntity)) throw new DuplicatedEntityException(duplicateErrorMessage);
+        String sql = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?" +
+                                    "WHERE %s = %d", table, description, value, date, expense_id, oldEntityId);
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, newEntity.getDescription());
+            statement.setBigDecimal(2, newEntity.getValue());
+            statement.setDate(3, Date.valueOf(newEntity.getOutcomeDate()));
+            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find EXPENSE with ID %s", oldEntityId));
+
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
     }
 
     @Override

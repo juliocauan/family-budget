@@ -70,8 +70,20 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
 
     @Override
     protected Boolean isDuplicated(Expense entity) {
-        // TODO Auto-generated method stub
-        return null;
+        String sql = String.format("SELECT * FROM %s" + 
+                                    " WHERE %s = ?" +
+                                    " AND EXTRACT(MONTH FROM %s) = ?" +
+                                    " AND EXTRACT(YEAR FROM %s) = ?", table, description, date, date);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, entity.getDescription());
+            statement.setInt(2, entity.getOutcomeDate().getMonthValue());
+            statement.setInt(3, entity.getOutcomeDate().getYear());
+            return statement.executeQuery().next();
+
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
     }
 
 }

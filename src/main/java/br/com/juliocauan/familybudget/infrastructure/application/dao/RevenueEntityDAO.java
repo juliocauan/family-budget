@@ -22,6 +22,7 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
     private Connection connection;
 
     private final String duplicateErrorMessage = "Revenue duplicate: Same description in the same month!";
+    private final String notFoundErrorMessage = "Couldn't find REVENUE with ID ";
     private final String table = "revenues";
     private final String revenue_id = "id";
     private final String description = "description";
@@ -55,11 +56,12 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
 
     @Override
     public RevenueEntity findOne(Integer id) {
-        String sql = String.format("SELECT %s, %s, %s FROM %s WHERE %s = %d", description, value, date, table, revenue_id, id);
+        String sql = String.format("SELECT %s, %s, %s FROM %s WHERE %s = ?", description, value, date, table, revenue_id);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
             statement.executeQuery();
             ResultSet rst = statement.getResultSet();
-            if(!rst.next()) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
+            if(!rst.next()) throw new NotFoundException(notFoundErrorMessage + id);
             RevenueEntity response = RevenueEntity.builder()
                 .id(id)
                 .description(rst.getString(1))
@@ -92,13 +94,14 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
     public void update(Integer oldEntityId, Revenue newEntity) {
         if(isDuplicated(newEntity)) throw new DuplicatedEntityException(duplicateErrorMessage);
         String sql = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?" +
-                                    "WHERE %s = %d", table, description, value, date, revenue_id, oldEntityId);
+                                    "WHERE %s = ?", table, description, value, date, revenue_id);
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, newEntity.getDescription());
             statement.setBigDecimal(2, newEntity.getValue());
             statement.setDate(3, Date.valueOf(newEntity.getIncomeDate()));
-            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", oldEntityId));
+            statement.setInt(4, oldEntityId);
+            if(statement.executeUpdate() == 0) throw new NotFoundException(notFoundErrorMessage + oldEntityId);
 
         } catch (SQLException ex) {
             throw new SQLConnectionException(ex);
@@ -108,10 +111,11 @@ public final class RevenueEntityDAO extends RevenueDAO<Integer>{
     @Override
     public void delete(Integer id) {
         String sql = String.format("DELETE FROM %s " +
-                                    "WHERE %s = %d", table, revenue_id, id);
+                                    "WHERE %s = ?", table, revenue_id);
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            if(statement.executeUpdate() == 0) throw new NotFoundException(String.format("Couldn't find REVENUE with ID %s", id));
+            statement.setInt(1, id);
+            if(statement.executeUpdate() == 0) throw new NotFoundException(notFoundErrorMessage + id);
 
         } catch (SQLException ex) {
             throw new SQLConnectionException(ex);

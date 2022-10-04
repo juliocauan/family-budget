@@ -3,12 +3,15 @@ package br.com.juliocauan.familybudget.infrastructure.application.dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.juliocauan.familybudget.domain.application.dao.ExpenseDAO;
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
+import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.datasource.DBCPDataSource;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
@@ -29,9 +32,24 @@ public final class ExpenseEntityDAO extends ExpenseDAO<Integer>{
     }
 
     @Override
-    public List<Expense> getAll() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<ExpenseEntity> getAll() {
+        String sql = String.format("SELECT %s, %s, %s FROM %s", description, value, date, table);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            List<ExpenseEntity> response = new ArrayList<>();
+            statement.executeQuery();
+            ResultSet rst = statement.getResultSet();
+            while(rst.next()){
+                ExpenseEntity revenue = ExpenseEntity.builder()
+                    .description(rst.getString(1))
+                    .value(rst.getBigDecimal(2))
+                    .outcomeDate(rst.getDate(3).toLocalDate())
+                    .build();
+                response.add(revenue);
+            }
+            return response;
+        } catch (SQLException ex) {
+            throw new SQLConnectionException(ex);
+        }
     }
 
     @Override

@@ -7,50 +7,49 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.application.dao.ExpenseEntityDAO;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
 import br.com.juliocauan.openapi.api.ExpensesApi;
 import br.com.juliocauan.openapi.model.ExpenseDTO;
+import lombok.AllArgsConstructor;
 
+@RestController
+@AllArgsConstructor
 public class ExpensesController implements ExpensesApi{
+
+    private final ExpenseService expenseService;
+
+    @Override
+    public ResponseEntity<Void> _postExpense(@Valid ExpenseDTO expenseDTO) {
+        expenseService.save(dtoToEntity(expenseDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @Override
     public ResponseEntity<List<ExpenseDTO>> _getAllExpenses() {
-        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
-        List<ExpenseEntity> list = expenseDAO.getAll();
+        List<ExpenseEntity> list = expenseService.getAll();
         List<ExpenseDTO> response = new ArrayList<>();
         list.forEach(expense -> response.add(entityToDto(expense)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
-    public ResponseEntity<Void> _postExpense(@Valid ExpenseDTO expenseDTO) {
-        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
-        expenseDAO.save(dtoToEntity(expenseDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @Override
     public ResponseEntity<ExpenseDTO> _getExpense(Integer expenseId) {
-        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
-        ExpenseEntity entity = expenseDAO.findOne(expenseId);
-        ExpenseDTO response = entityToDto(entity);
+        ExpenseDTO response = entityToDto(expenseService.findOne(expenseId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpenseDTO expenseDTO) {
-        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
-        ExpenseEntity newEntity = dtoToEntity(expenseDTO);
-        expenseDAO.update(expenseId, newEntity);
+        expenseService.update(expenseId, dtoToEntity(expenseDTO));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Override
     public ResponseEntity<Void> _deleteExpense(Integer expenseId) {
-        ExpenseEntityDAO expenseDAO = new ExpenseEntityDAO();
-        expenseDAO.delete(expenseId);
+        expenseService.delete(expenseId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

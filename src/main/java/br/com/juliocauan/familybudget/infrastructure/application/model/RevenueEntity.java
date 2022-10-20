@@ -3,6 +3,12 @@ package br.com.juliocauan.familybudget.infrastructure.application.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
@@ -11,23 +17,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+@Entity
 @Data @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class RevenueEntity extends Revenue{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @NonNull
+    @Size(max = 50)
+    @Column(nullable = false)
     private String description;
 
-    @NonNull
+    @Column(nullable = false, precision = 2)
     private BigDecimal value;
 
-    @NonNull
+    @Column(nullable = false)
     private LocalDate incomeDate;
     
 }

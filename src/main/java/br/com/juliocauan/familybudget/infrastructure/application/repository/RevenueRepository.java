@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 
 @Repository
-public abstract class RevenueRepository implements JpaRepository<RevenueEntity, Integer>, JpaSpecificationExecutor<RevenueEntity>{
+public interface RevenueRepository extends JpaRepository<RevenueEntity, Integer>, JpaSpecificationExecutor<RevenueEntity>{
 }

@@ -8,7 +8,6 @@ import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.domain.application.service.RevenueServiceDomain;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
-import br.com.juliocauan.familybudget.infrastructure.application.repository.specification.RevenueSpecification;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -59,10 +58,10 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
 
     @Override
     protected Boolean hasDuplicate(Revenue entity) {
-        List<RevenueEntity> list = revenueRepository.findAll(
-            RevenueSpecification.description(entity.getDescription())
-            .and(RevenueSpecification.month(entity.getIncomeDate().getMonthValue()))
-            .and(RevenueSpecification.year(entity.getIncomeDate().getYear()))
+        List<RevenueEntity> list = revenueRepository.findDuplicate(
+            entity.getDescription(),
+            entity.getIncomeDate().getMonthValue(),
+            entity.getIncomeDate().getYear()
         );
         return !list.isEmpty();
     }

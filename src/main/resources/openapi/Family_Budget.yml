@@ -227,13 +227,13 @@ components:
       type: object
       required:
         - "description"
-        - "value"
+        - "quantity"
         - "date"
       properties:
         description:
           type: string
           example: "Salary"
-        value:
+        quantity:
           type: number
           example: 1383.14
         date:
@@ -244,13 +244,13 @@ components:
       type: object
       required:
         - "description"
-        - "value"
+        - "quantity"
         - "date"
       properties:
         description:
           type: string
           example: "Gym"
-        value:
+        quantity:
           type: number
           example: 131.41
         date:

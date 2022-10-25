@@ -5,6 +5,6 @@ import java.time.LocalDate;
 
 public abstract class Expense {
     public abstract String getDescription();
-    public abstract BigDecimal getValue();
+    public abstract BigDecimal getQuantity();
     public abstract LocalDate getOutcomeDate();
 }

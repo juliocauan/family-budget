@@ -56,6 +56,12 @@
 			<version>0.2.3</version>
 		</dependency>
 		<!--OPEN API DEPENDENCIES-->
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

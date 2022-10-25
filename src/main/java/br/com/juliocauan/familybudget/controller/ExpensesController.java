@@ -56,14 +56,14 @@ public class ExpensesController implements ExpensesApi{
     private ExpenseDTO entityToDto(ExpenseEntity entity){
         return new ExpenseDTO()
             .description(entity.getDescription())
-            .value(entity.getValue())
+            .quantity(entity.getQuantity())
             .date(entity.getOutcomeDate());
     }
 
     private ExpenseEntity dtoToEntity(ExpenseDTO dto){
         return ExpenseEntity.builder()
             .description(dto.getDescription())
-            .value(dto.getValue())
+            .quantity(dto.getQuantity())
             .outcomeDate(dto.getDate())
             .build();
     }

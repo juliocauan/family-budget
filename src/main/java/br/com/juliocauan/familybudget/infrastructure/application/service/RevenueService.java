@@ -30,7 +30,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
             RevenueEntity.builder()
             .description(entity.getDescription())
             .incomeDate(entity.getIncomeDate())
-            .value(entity.getValue())
+            .quantity(entity.getQuantity())
             .build()
         );
     }
@@ -47,7 +47,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
         RevenueEntity revenue = findOne(oldEntityId);
         revenue.setDescription(newEntity.getDescription());
         revenue.setIncomeDate(newEntity.getIncomeDate());
-        revenue.setValue(newEntity.getValue());
+        revenue.setQuantity(newEntity.getQuantity());
         revenueRepository.save(revenue);
     }
 

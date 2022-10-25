@@ -31,7 +31,7 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
             ExpenseEntity.builder()
             .description(entity.getDescription())
             .outcomeDate(entity.getOutcomeDate())
-            .value(entity.getValue())
+            .quantity(entity.getQuantity())
             .build()
         );
     }
@@ -48,7 +48,7 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
         ExpenseEntity expense = findOne(oldEntityId);
         expense.setDescription(newEntity.getDescription());
         expense.setOutcomeDate(newEntity.getOutcomeDate());
-        expense.setValue(newEntity.getValue());
+        expense.setQuantity(newEntity.getQuantity());
         expenseRepository.save(expense);
     }
 

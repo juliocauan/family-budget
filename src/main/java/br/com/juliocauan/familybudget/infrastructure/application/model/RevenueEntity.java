@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import lombok.AllArgsConstructor;
@@ -29,12 +28,11 @@ public class RevenueEntity extends Revenue{
     @Column(name = "id")
     private Integer id;
 
-    @Size(max = 50)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String description;
 
-    @Column(nullable = false, precision = 2)
-    private BigDecimal value;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal quantity;
 
     @Column(nullable = false)
     private LocalDate incomeDate;

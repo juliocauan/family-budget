@@ -22,7 +22,7 @@ public class RevenuesControllerTest extends TestContext{
 
     @BeforeEach
     public void setup() {
-        revenueDTO.date(LocalDate.now()).description("Test Description").value(new BigDecimal("12345.67"));
+        revenueDTO.date(LocalDate.now()).description("Test Description").quantity(new BigDecimal("12345.67"));
     }
 
     @Test

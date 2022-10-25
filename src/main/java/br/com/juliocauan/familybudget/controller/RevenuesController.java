@@ -56,14 +56,14 @@ public class RevenuesController implements RevenuesApi{
     private RevenueDTO entityToDto(RevenueEntity entity){
         return new RevenueDTO()
             .description(entity.getDescription())
-            .value(entity.getValue())
+            .quantity(entity.getQuantity())
             .date(entity.getIncomeDate());
     }
 
     private RevenueEntity dtoToEntity(RevenueDTO dto){
         return RevenueEntity.builder()
             .description(dto.getDescription())
-            .value(dto.getValue())
+            .quantity(dto.getQuantity())
             .incomeDate(dto.getDate())
             .build();
     }

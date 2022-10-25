@@ -1,8 +1,10 @@
 package br.com.juliocauan.familybudget.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,8 +33,20 @@ public class RevenuesControllerTest extends TestContext{
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
             .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void givenInvalidRevenue_WhenPost_Then400() throws Exception {
+        revenueDTO.date(null).description(null).quantity(null);
+        getMockMvc().perform(
+            post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getObjectMapper().writeValueAsString(revenueDTO)))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("402"))
+            .andExpect(jsonPath("$.fieldList", hasSize(3)));
     }
 
 }

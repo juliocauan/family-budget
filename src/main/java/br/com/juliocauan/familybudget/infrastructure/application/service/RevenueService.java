@@ -68,7 +68,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
 
     @Override
     protected String getClassName() {
-        return RevenueEntity.class.getName();
+        return RevenueEntity.class.getSimpleName();
     }
     
 }

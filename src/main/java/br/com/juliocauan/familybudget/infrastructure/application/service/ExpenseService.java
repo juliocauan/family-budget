@@ -69,7 +69,7 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
 
     @Override
     protected String getClassName() {
-        return ExpenseEntity.class.getName();
+        return ExpenseEntity.class.getSimpleName();
     }
     
 }

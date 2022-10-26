@@ -2,6 +2,8 @@ package br.com.juliocauan.familybudget.infrastructure.application.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
@@ -9,7 +11,6 @@ import br.com.juliocauan.familybudget.domain.application.service.RevenueServiceD
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
-import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -38,7 +39,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     @Override
     public RevenueEntity findOne(Integer id) {
         return revenueRepository.findById(id).orElseThrow(() ->
-            new NotFoundException(getNotFoundExceptionMessage(id)));
+            new EntityNotFoundException(getNotFoundExceptionMessage(id)));
     }
 
     @Override

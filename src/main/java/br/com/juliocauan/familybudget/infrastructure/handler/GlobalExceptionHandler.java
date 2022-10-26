@@ -1,5 +1,7 @@
 package br.com.juliocauan.familybudget.infrastructure.handler;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +12,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
-import br.com.juliocauan.familybudget.infrastructure.handler.exception.NotFoundException;
-import br.com.juliocauan.familybudget.infrastructure.handler.exception.SQLConnectionException;
 import br.com.juliocauan.openapi.model.Error;
 import br.com.juliocauan.openapi.model.ErrorField;
 
@@ -32,16 +32,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return org.apache.commons.lang3.StringUtils.join(elements, "\n");
     }
     
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> notFoundError(NotFoundException ex){
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> notFoundError(EntityNotFoundException ex){
         responseError = init(301, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
-    }
-    
-    @ExceptionHandler(SQLConnectionException.class)
-    public ResponseEntity<Object> sqlError(SQLConnectionException ex){
-        responseError = init(401, ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
     
     //OPENAPI VALIDATION ERROR

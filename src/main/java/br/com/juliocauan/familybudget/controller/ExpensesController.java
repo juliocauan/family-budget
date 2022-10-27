@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
 import br.com.juliocauan.openapi.api.ExpensesApi;
@@ -32,9 +31,8 @@ public class ExpensesController implements ExpensesApi{
 
     @Override
     public ResponseEntity<List<ExpenseGetDTO>> _getAllExpenses() {
-        List<ExpenseEntity> list = expenseService.getAll();
         List<ExpenseGetDTO> response = new ArrayList<>();
-        list.forEach(expense -> response.add(ExpenseMapper.entityToDto(expense)));
+        expenseService.getAll().forEach(expense -> response.add(ExpenseMapper.entityToDto(expense)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

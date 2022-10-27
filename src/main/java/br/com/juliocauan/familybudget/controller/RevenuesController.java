@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.RevenueMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.service.RevenueService;
 import br.com.juliocauan.openapi.api.RevenuesApi;
@@ -30,9 +29,8 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<List<RevenueDTO>> _getAllRevenues() {
-        List<RevenueEntity> list = revenueService.getAll();
         List<RevenueDTO> response = new ArrayList<>();
-        list.forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
+        revenueService.getAll().forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

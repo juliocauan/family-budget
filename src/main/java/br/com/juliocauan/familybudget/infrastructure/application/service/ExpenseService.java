@@ -10,7 +10,6 @@ import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.domain.application.service.ExpenseServiceDomain;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
-import br.com.juliocauan.familybudget.infrastructure.application.repository.specification.ExpenseSpecification;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import br.com.juliocauan.openapi.model.CategoryEnum;
 import lombok.AllArgsConstructor;
@@ -62,10 +61,10 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
 
     @Override
     protected Boolean hasDuplicate(Expense entity) {
-        List<ExpenseEntity> list = expenseRepository.findAll(
-            ExpenseSpecification.description(entity.getDescription())
-            .and(ExpenseSpecification.month(entity.getOutcomeDate().getMonthValue()))
-            .and(ExpenseSpecification.year(entity.getOutcomeDate().getYear()))
+        List<ExpenseEntity> list = expenseRepository.findDuplicate(
+            entity.getDescription(),
+            entity.getOutcomeDate().getMonthValue(),
+            entity.getOutcomeDate().getYear()
         );
         return !list.isEmpty();
     }

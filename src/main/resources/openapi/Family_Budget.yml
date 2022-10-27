@@ -264,7 +264,19 @@ components:
     IntegerId:
       type: integer
       format: int32
-  
+
+    CategoryEnum:
+      type: string
+      enum:
+        - 'FOOD'
+        - 'HEALTH'
+        - 'HOME'
+        - 'TRANSPORT'
+        - 'EDUCATION'
+        - 'LEISURE'
+        - 'UNFORESEEN'
+        - 'OTHERS'
+
   responses:
     NotFound:
       description: "Could not find specific Entity"

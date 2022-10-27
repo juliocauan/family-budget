@@ -5,12 +5,15 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
+import br.com.juliocauan.openapi.model.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +39,8 @@ public class ExpenseEntity extends Expense{
 
     @Column(nullable = false)
     private LocalDate outcomeDate;
+
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
     
 }

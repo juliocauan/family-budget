@@ -114,7 +114,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExpenseDTO"
+                  $ref: "#/components/schemas/ExpenseGetDTO"
     post:
       tags:
         - "Expense"
@@ -124,7 +124,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExpenseDTO"
+              $ref: "#/components/schemas/ExpensePostDTO"
       responses:
         '201':
           description: "Successfully created Expense Entity"
@@ -148,7 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExpenseDTO"
+                $ref: "#/components/schemas/ExpenseGetDTO"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
@@ -166,7 +166,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExpenseDTO"
+              $ref: "#/components/schemas/ExpensePutDTO"
       responses:
         '200':
           description: "Successfully updated Expense Entity"
@@ -240,7 +240,39 @@ components:
           type: string
           format: date
     
-    ExpenseDTO:
+    ExpenseGetDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Gym"
+        quantity:
+          type: number
+          example: 131.41
+        date:
+          type: string
+          format: date
+        category:
+          $ref: "#/components/schemas/CategoryEnum"
+    ExpensePostDTO:
+      type: object
+      required:
+        - "description"
+        - "quantity"
+        - "date"
+      properties:
+        description:
+          type: string
+          example: "Gym"
+        quantity:
+          type: number
+          example: 131.41
+        date:
+          type: string
+          format: date
+        category:
+          $ref: "#/components/schemas/CategoryEnum"
+    ExpensePutDTO:
       type: object
       required:
         - "description"

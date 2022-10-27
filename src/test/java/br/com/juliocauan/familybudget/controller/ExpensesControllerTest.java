@@ -23,7 +23,9 @@ import br.com.juliocauan.familybudget.config.TestContext;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
-import br.com.juliocauan.openapi.model.ExpenseDTO;
+import br.com.juliocauan.openapi.model.CategoryEnum;
+import br.com.juliocauan.openapi.model.ExpensePostDTO;
+import br.com.juliocauan.openapi.model.ExpensePutDTO;
 
 public class ExpensesControllerTest extends TestContext{
     
@@ -33,8 +35,9 @@ public class ExpensesControllerTest extends TestContext{
     private final String urlInvalidId = "/expenses/0";
     private final String duplicateErrorMessage = "ExpenseEntity duplicate: Same description in the same month!";
     private final String notFoundErrorMessage = "Couldn't find ExpenseEntity with id 0!";
-    
-    private ExpenseDTO expenseDTO = new ExpenseDTO();
+
+    private ExpensePostDTO postDTO = new ExpensePostDTO();
+    private ExpensePutDTO putDTO = new ExpensePutDTO();
 
     @Autowired
     public ExpensesControllerTest(ExpenseRepository expenseRepository) {
@@ -43,12 +46,13 @@ public class ExpensesControllerTest extends TestContext{
 
     @BeforeEach
     public void setup() {
-        expenseDTO.date(LocalDate.now()).description("Test Description").quantity(new BigDecimal("12345.67"));
+        postDTO.date(LocalDate.now()).description("Post Test Description").quantity(new BigDecimal("12345.67")).category(CategoryEnum.EDUCATION);
+        putDTO.date(LocalDate.now()).description("Put Test Description").quantity(new BigDecimal("12345.67"));
         expenseRepository.deleteAll();
     }
 
-    private ExpenseEntity saveExpense(ExpenseDTO expenseDTO){
-        return expenseRepository.save(ExpenseMapper.dtoToEntity(expenseDTO));
+    private ExpenseEntity saveExpense(ExpensePostDTO postDTO){
+        return expenseRepository.save(ExpenseMapper.dtoToEntity(postDTO));
     }
 
     @Test
@@ -56,18 +60,18 @@ public class ExpensesControllerTest extends TestContext{
         getMockMvc().perform(
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(postDTO)))
             .andDo(print())
             .andExpect(status().isCreated());
     }
 
     @Test
     public void givenInvalidExpense_WhenPost_Then400() throws Exception {
-        expenseDTO.date(null).description(null).quantity(null);
+        postDTO.date(null).description(null).quantity(null).category(null);
         getMockMvc().perform(
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(postDTO)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("402"))
@@ -76,11 +80,11 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void givenDuplicatedExpense_WhenPost_Then400() throws Exception {
-        saveExpense(expenseDTO);
+        saveExpense(postDTO);
         getMockMvc().perform(
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(postDTO)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("403"))
@@ -90,7 +94,7 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void given_WhenGet_Then200() throws Exception {
-        saveExpense(expenseDTO);
+        saveExpense(postDTO);
         getMockMvc().perform(
             get(url))
             .andDo(print())
@@ -102,15 +106,16 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void givenExpenseId_WhenGetById_Then200() throws Exception {
-        ExpenseEntity entity = saveExpense(expenseDTO);
+        ExpenseEntity entity = saveExpense(postDTO);
         getMockMvc().perform(
             get(urlId, entity.getId()))
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.description").value(expenseDTO.getDescription()))
-            .andExpect(jsonPath("$.quantity").value(expenseDTO.getQuantity()))
-            .andExpect(jsonPath("$.date").value(expenseDTO.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)));
+            .andExpect(jsonPath("$.description").value(postDTO.getDescription()))
+            .andExpect(jsonPath("$.quantity").value(postDTO.getQuantity()))
+            .andExpect(jsonPath("$.date").value(postDTO.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)))
+            .andExpect(jsonPath("$.category").value(postDTO.getCategory().getValue()));
     }
 
     @Test
@@ -126,24 +131,23 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void givenExpense_WhenPut_Then204() throws Exception {
-        ExpenseEntity entity = saveExpense(expenseDTO);
-        expenseDTO.description("Put Test Description");
+        ExpenseEntity entity = saveExpense(postDTO);
         getMockMvc().perform(
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(putDTO)))
             .andDo(print())
             .andExpect(status().isNoContent());
     }
 
     @Test
     public void givenInvalidExpense_WhenPut_Then400() throws Exception {
-        ExpenseEntity entity = saveExpense(expenseDTO);
-        expenseDTO.date(null).description(null).quantity(null);
+        ExpenseEntity entity = saveExpense(postDTO);
+        putDTO.date(null).description(null).quantity(null);
         getMockMvc().perform(
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(putDTO)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("402"))
@@ -152,11 +156,12 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void givenDuplicatedExpense_WhenPut_Then400() throws Exception {
-        ExpenseEntity entity = saveExpense(expenseDTO);
+        ExpenseEntity entity = saveExpense(postDTO);
+        putDTO.description(postDTO.getDescription());
         getMockMvc().perform(
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(putDTO)))
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("403"))
@@ -169,7 +174,7 @@ public class ExpensesControllerTest extends TestContext{
         getMockMvc().perform(
             put(urlInvalidId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getObjectMapper().writeValueAsString(expenseDTO)))
+                .content(getObjectMapper().writeValueAsString(putDTO)))
             .andDo(print())
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.code").value("301"))
@@ -179,7 +184,7 @@ public class ExpensesControllerTest extends TestContext{
 
     @Test
     public void givenExpenseId_WhenDelete_Then200() throws Exception {
-        ExpenseEntity entity = saveExpense(expenseDTO);
+        ExpenseEntity entity = saveExpense(postDTO);
         getMockMvc().perform(
             delete(urlId, entity.getId()))
             .andDo(print())

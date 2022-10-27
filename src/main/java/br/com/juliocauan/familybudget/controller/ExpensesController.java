@@ -13,7 +13,9 @@ import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEn
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
 import br.com.juliocauan.openapi.api.ExpensesApi;
-import br.com.juliocauan.openapi.model.ExpenseDTO;
+import br.com.juliocauan.openapi.model.ExpenseGetDTO;
+import br.com.juliocauan.openapi.model.ExpensePostDTO;
+import br.com.juliocauan.openapi.model.ExpensePutDTO;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -23,27 +25,27 @@ public class ExpensesController implements ExpensesApi{
     private final ExpenseService expenseService;
 
     @Override
-    public ResponseEntity<Void> _postExpense(@Valid ExpenseDTO expenseDTO) {
+    public ResponseEntity<Void> _postExpense(@Valid ExpensePostDTO expenseDTO) {
         expenseService.save(ExpenseMapper.dtoToEntity(expenseDTO));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    public ResponseEntity<List<ExpenseDTO>> _getAllExpenses() {
+    public ResponseEntity<List<ExpenseGetDTO>> _getAllExpenses() {
         List<ExpenseEntity> list = expenseService.getAll();
-        List<ExpenseDTO> response = new ArrayList<>();
+        List<ExpenseGetDTO> response = new ArrayList<>();
         list.forEach(expense -> response.add(ExpenseMapper.entityToDto(expense)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
-    public ResponseEntity<ExpenseDTO> _getExpense(Integer expenseId) {
-        ExpenseDTO response = ExpenseMapper.entityToDto(expenseService.findOne(expenseId));
+    public ResponseEntity<ExpenseGetDTO> _getExpense(Integer expenseId) {
+        ExpenseGetDTO response = ExpenseMapper.entityToDto(expenseService.findOne(expenseId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
-    public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpenseDTO expenseDTO) {
+    public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpensePutDTO expenseDTO) {
         expenseService.update(expenseId, ExpenseMapper.dtoToEntity(expenseDTO));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

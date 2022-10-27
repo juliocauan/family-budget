@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 
 import br.com.juliocauan.familybudget.config.TestContext;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
 import br.com.juliocauan.openapi.model.ExpenseDTO;
 
@@ -47,12 +48,7 @@ public class ExpensesControllerTest extends TestContext{
     }
 
     private ExpenseEntity saveExpense(ExpenseDTO expenseDTO){
-        ExpenseEntity entity = ExpenseEntity.builder()
-            .description(expenseDTO.getDescription())
-            .outcomeDate(expenseDTO.getDate())
-            .quantity(expenseDTO.getQuantity())
-            .build();
-        return expenseRepository.save(entity);
+        return expenseRepository.save(ExpenseMapper.dtoToEntity(expenseDTO));
     }
 
     @Test

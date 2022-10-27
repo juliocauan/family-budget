@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.RevenueMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.service.RevenueService;
 import br.com.juliocauan.openapi.api.RevenuesApi;
 import br.com.juliocauan.openapi.model.RevenueDTO;
@@ -23,7 +24,7 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<Void> _postRevenue(@Valid RevenueDTO revenuePOST) {
-        revenueService.save(dtoToEntity(revenuePOST));
+        revenueService.save(RevenueMapper.dtoToEntity(revenuePOST));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -31,19 +32,19 @@ public class RevenuesController implements RevenuesApi{
     public ResponseEntity<List<RevenueDTO>> _getAllRevenues() {
         List<RevenueEntity> list = revenueService.getAll();
         List<RevenueDTO> response = new ArrayList<>();
-        list.forEach(revenue -> response.add(entityToDto(revenue)));
+        list.forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<RevenueDTO> _getRevenue(Integer revenueId) {
-        RevenueDTO response = entityToDto(revenueService.findOne(revenueId));
+        RevenueDTO response = RevenueMapper.entityToDto(revenueService.findOne(revenueId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<Void> _updateRevenue(Integer revenueId, @Valid RevenueDTO revenuePUT) {
-        revenueService.update(revenueId, dtoToEntity(revenuePUT));
+        revenueService.update(revenueId, RevenueMapper.dtoToEntity(revenuePUT));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -51,21 +52,6 @@ public class RevenuesController implements RevenuesApi{
     public ResponseEntity<Void> _deleteRevenue(Integer revenueId) {
         revenueService.delete(revenueId);
         return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    private RevenueDTO entityToDto(RevenueEntity entity){
-        return new RevenueDTO()
-            .description(entity.getDescription())
-            .quantity(entity.getQuantity())
-            .date(entity.getIncomeDate());
-    }
-
-    private RevenueEntity dtoToEntity(RevenueDTO dto){
-        return RevenueEntity.builder()
-            .description(dto.getDescription())
-            .quantity(dto.getQuantity())
-            .incomeDate(dto.getDate())
-            .build();
     }
     
 }

@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 
 import br.com.juliocauan.familybudget.config.TestContext;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.RevenueMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
 import br.com.juliocauan.openapi.model.RevenueDTO;
 
@@ -47,12 +48,7 @@ public class RevenuesControllerTest extends TestContext{
     }
 
     private RevenueEntity saveRevenue(RevenueDTO revenueDTO){
-        RevenueEntity entity = RevenueEntity.builder()
-            .description(revenueDTO.getDescription())
-            .incomeDate(revenueDTO.getDate())
-            .quantity(revenueDTO.getQuantity())
-            .build();
-        return revenueRepository.save(entity);
+        return revenueRepository.save(RevenueMapper.dtoToEntity(revenueDTO));
     }
 
     @Test

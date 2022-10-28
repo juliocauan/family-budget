@@ -26,9 +26,9 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     }
 
     @Override
-    public void save(Expense entity) {
+    public ExpenseEntity save(Expense entity) {
         if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        expenseRepository.save(
+        return expenseRepository.save(
             ExpenseEntity.builder()
             .description(entity.getDescription())
             .outcomeDate(entity.getOutcomeDate())
@@ -45,13 +45,13 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     }
 
     @Override
-    public void update(Integer oldEntityId, Expense newEntity) {
+    public ExpenseEntity update(Integer oldEntityId, Expense newEntity) {
         if(hasDuplicate(newEntity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
         ExpenseEntity expense = findOne(oldEntityId);
         expense.setDescription(newEntity.getDescription());
         expense.setOutcomeDate(newEntity.getOutcomeDate());
         expense.setQuantity(newEntity.getQuantity());
-        expenseRepository.save(expense);
+        return expenseRepository.save(expense);
     }
 
     @Override

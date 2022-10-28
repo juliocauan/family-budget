@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class BaseService<E, ID> {
     public abstract List<? extends E> getAll();
-    public abstract void save(E entity);
+    public abstract E save(E entity);
     public abstract E findOne(ID id);
-    public abstract void update(ID oldEntityId, E newEntity);
+    public abstract E update(ID oldEntityId, E newEntity);
     public abstract void delete(ID id);
     protected abstract Boolean hasDuplicate(E entity);
     protected abstract String getClassName();

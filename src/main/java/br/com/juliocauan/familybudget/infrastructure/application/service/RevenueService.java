@@ -25,9 +25,9 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     }
 
     @Override
-    public void save(Revenue entity) {
+    public RevenueEntity save(Revenue entity) {
         if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        revenueRepository.save(
+        return revenueRepository.save(
             RevenueEntity.builder()
             .description(entity.getDescription())
             .incomeDate(entity.getIncomeDate())
@@ -43,13 +43,13 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     }
 
     @Override
-    public void update(Integer oldEntityId, Revenue newEntity) {
+    public RevenueEntity update(Integer oldEntityId, Revenue newEntity) {
         if(hasDuplicate(newEntity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
         RevenueEntity revenue = findOne(oldEntityId);
         revenue.setDescription(newEntity.getDescription());
         revenue.setIncomeDate(newEntity.getIncomeDate());
         revenue.setQuantity(newEntity.getQuantity());
-        revenueRepository.save(revenue);
+        return revenueRepository.save(revenue);
     }
 
     @Override

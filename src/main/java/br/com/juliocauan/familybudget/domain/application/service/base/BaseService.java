@@ -3,11 +3,11 @@ package br.com.juliocauan.familybudget.domain.application.service.base;
 import java.util.List;
 
 public abstract class BaseService<E, ID> {
-    public abstract List<? extends E> getAll();
-    public abstract E save(E entity);
-    public abstract E findOne(ID id);
-    public abstract E update(ID oldEntityId, E newEntity);
-    public abstract void delete(ID id);
+    protected abstract List<? extends E> getAll();
+    protected abstract E save(E entity);
+    protected abstract E findOne(ID id);
+    protected abstract E update(ID oldEntityId, E newEntity);
+    protected abstract void delete(ID id);
     protected abstract Boolean hasDuplicate(E entity);
     protected abstract String getClassName();
     protected final String getNotFoundExceptionMessage(ID id){

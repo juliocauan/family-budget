@@ -20,8 +20,13 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     private final RevenueRepository revenueRepository;
     
     @Override
-    public List<RevenueEntity> getAll() {
+    protected List<RevenueEntity> getAll() {
         return revenueRepository.findAll();
+    }
+
+    @Override
+    public List<RevenueEntity> getAll(String description) {
+        return description == null ? getAll() : revenueRepository.findByDescriptionLike(description);
     }
 
     @Override

@@ -12,6 +12,7 @@ import br.com.juliocauan.familybudget.config.TestContext;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
 import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
+import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import br.com.juliocauan.openapi.model.CategoryEnum;
 
 public class ExpenseServiceTest extends TestContext {
@@ -38,9 +39,21 @@ public class ExpenseServiceTest extends TestContext {
     }
 
     @Test
+    public void givenDuplicateExpense_WhenSave_ThenDuplicateError(){
+        expenseRepository.save(entity);
+        Assertions.assertThrows(DuplicatedEntityException.class, () -> expenseService.save(entity));
+    }
+
+    @Test
+    public void givenDuplicateExpense_WhenUpdate_ThenDuplicateError(){
+        ExpenseEntity expense = expenseRepository.save(entity);
+        Assertions.assertThrows(DuplicatedEntityException.class, () -> expenseService.update(expense.getId(), expense));
+    }
+
+    @Test
     public void givenCategory_WhenSave_ThenUseGivenCategory(){
         ExpenseEntity expense = expenseService.save(entity);
-        Assertions.assertEquals(entity.getCategory(), expense.getCategory());
+        Assertions.assertEquals(CategoryEnum.LEISURE, expense.getCategory());
     }
     
     @Test
@@ -49,6 +62,5 @@ public class ExpenseServiceTest extends TestContext {
         ExpenseEntity expense = expenseService.save(entity);
         Assertions.assertEquals(CategoryEnum.OTHERS, expense.getCategory());
     }
-    
     
 }

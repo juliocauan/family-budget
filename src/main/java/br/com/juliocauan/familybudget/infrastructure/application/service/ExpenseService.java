@@ -11,7 +11,6 @@ import br.com.juliocauan.familybudget.domain.application.service.ExpenseServiceD
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
-import br.com.juliocauan.openapi.model.CategoryEnum;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -33,7 +32,7 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
             .description(entity.getDescription())
             .outcomeDate(entity.getOutcomeDate())
             .quantity(entity.getQuantity())
-            .category(entity.getCategory() == null ? CategoryEnum.OTHERS : entity.getCategory())
+            .category(checkCategory(entity.getCategory()))
             .build()
         );
     }

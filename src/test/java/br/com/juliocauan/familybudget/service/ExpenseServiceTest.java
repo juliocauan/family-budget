@@ -32,7 +32,7 @@ public class ExpenseServiceTest extends TestContext {
     public void setup(){
         entity.setId(null);
         entity.setCategory(CategoryEnum.LEISURE);
-        entity.setDescription("Test Description");
+        entity.setDescription("Test Description 1");
         entity.setOutcomeDate(LocalDate.now());
         entity.setQuantity(new BigDecimal("12345.67"));
         expenseRepository.deleteAll();

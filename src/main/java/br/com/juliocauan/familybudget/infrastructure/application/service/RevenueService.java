@@ -26,7 +26,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
 
     @Override
     public List<RevenueEntity> getAll(String description) {
-        return description == null ? getAll() : revenueRepository.findByDescriptionLike(description);
+        return description == null ? getAll() : revenueRepository.findByDescriptionContaining(description);
     }
 
     @Override

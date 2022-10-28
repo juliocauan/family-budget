@@ -21,6 +21,6 @@ public interface RevenueRepository extends JpaRepository<RevenueEntity, Integer>
         nativeQuery = true)
     List<RevenueEntity> findDuplicate(@Param("description") String description, @Param("month") int month, @Param("year") int year);
 
-    List<RevenueEntity> findByDescriptionLike(String description);
+    List<RevenueEntity> findByDescriptionContaining(String description);
 
 }

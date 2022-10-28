@@ -17,6 +17,12 @@ paths:
       tags:
         - "Revenue"
       operationId: getAllRevenues
+      parameters:
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: "Successfully found all Revenue Entities"

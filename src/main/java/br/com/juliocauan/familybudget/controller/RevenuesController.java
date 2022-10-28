@@ -28,7 +28,7 @@ public class RevenuesController implements RevenuesApi{
     }
 
     @Override
-    public ResponseEntity<List<RevenueDTO>> _getAllRevenues() {
+    public ResponseEntity<List<RevenueDTO>> _getAllRevenues(@Valid String description) {
         List<RevenueDTO> response = new ArrayList<>();
         revenueService.getAll().forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
         return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -30,10 +30,12 @@ public class RevenueServiceTest extends TestContext{
 
     @BeforeEach
     public void setup(){
-        entity.setId(null);
-        entity.setDescription("Test Description 1");
-        entity.setIncomeDate(LocalDate.now());
-        entity.setQuantity(new BigDecimal("12345.67"));
+        entity = RevenueEntity.builder()
+            .id(null)
+            .description("Test Description 1")
+            .incomeDate(LocalDate.now())
+            .quantity(new BigDecimal("12345.67"))
+        .build();
         revenueRepository.deleteAll();
     }
 

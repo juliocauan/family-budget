@@ -30,11 +30,13 @@ public class ExpenseServiceTest extends TestContext {
 
     @BeforeEach
     public void setup(){
-        entity.setId(null);
-        entity.setCategory(CategoryEnum.LEISURE);
-        entity.setDescription("Test Description 1");
-        entity.setOutcomeDate(LocalDate.now());
-        entity.setQuantity(new BigDecimal("12345.67"));
+        entity = ExpenseEntity.builder()
+            .id(null)
+            .category(CategoryEnum.LEISURE)
+            .description("Test Description 1")
+            .outcomeDate(LocalDate.now())
+            .quantity(new BigDecimal("12345.67"))
+        .build();
         expenseRepository.deleteAll();
     }
 

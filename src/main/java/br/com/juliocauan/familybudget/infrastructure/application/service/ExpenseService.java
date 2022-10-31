@@ -20,8 +20,13 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     private final ExpenseRepository expenseRepository;
 
     @Override
-    public List<ExpenseEntity> getAll() {
+    protected List<ExpenseEntity> getAll() {
         return expenseRepository.findAll();
+    }
+
+    @Override
+    public List<ExpenseEntity> getAll(String description) {
+        return description == null ? getAll() : expenseRepository.findByDescriptionContaining(description);
     }
 
     @Override

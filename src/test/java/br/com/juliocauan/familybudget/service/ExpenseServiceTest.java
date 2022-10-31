@@ -2,6 +2,7 @@ package br.com.juliocauan.familybudget.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,5 +65,25 @@ public class ExpenseServiceTest extends TestContext {
         ExpenseEntity expense = expenseService.save(entity);
         Assertions.assertEquals(CategoryEnum.OTHERS, expense.getCategory());
     }
-    
+
+    @Test
+    public void givenNoDescription_WhenGet_ThenGetAll(){
+        expenseRepository.save(entity);
+        entity.setId(null);
+        entity.setDescription("Test Description 2");
+        expenseRepository.save(entity);
+        List<ExpenseEntity> list = expenseService.getAll(null);
+        Assertions.assertEquals(2, list.size());
+    }
+
+    @Test
+    public void givenDescription_WhenGet_ThenGetContainsDescription(){
+        expenseRepository.save(entity);
+        entity.setId(null);
+        entity.setDescription("Test Description 2");
+        expenseRepository.save(entity);
+        List<ExpenseEntity> list = expenseService.getAll("1");
+        Assertions.assertEquals(1, list.size());
+    }
+  
 }

@@ -112,6 +112,12 @@ paths:
       tags:
         - "Expense"
       operationId: getAllExpenses
+      parameters:
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: "Successfully found all Expense Entities"

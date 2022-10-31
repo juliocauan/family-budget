@@ -93,7 +93,7 @@ public class ExpensesControllerTest extends TestContext{
     }
 
     @Test
-    public void given_WhenGet_Then200() throws Exception {
+    public void givenNoDescription_WhenGet_Then200() throws Exception {
         saveExpense(postDTO);
         getMockMvc().perform(
             get(url))
@@ -102,6 +102,32 @@ public class ExpensesControllerTest extends TestContext{
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void givenDescription_WhenGet_Then200() throws Exception {
+        saveExpense(postDTO);
+        getMockMvc().perform(
+            get(url)
+                .queryParam("description", postDTO.getDescription()))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void givenNotPresentDescription_WhenGet_Then200() throws Exception {
+        saveExpense(postDTO);
+        getMockMvc().perform(
+            get(url)
+                .queryParam("description", "null"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test

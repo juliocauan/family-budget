@@ -74,5 +74,17 @@ public class ExpenseRepositoryTest extends TestContext {
             entity.getOutcomeDate().getYear() + 1);
         Assertions.assertTrue(list.isEmpty());
     }
+    
+    @Test
+    public void givenPresentDescription_WhenFindByDescriptionContaining_ThenNotEmptyList(){
+        List<ExpenseEntity> list = expenseRepository.findByDescriptionContaining("1");
+        Assertions.assertFalse(list.isEmpty());
+    }
+        
+    @Test
+    public void givenNotPresentDescription_WhenFindByDescriptionContaining_ThenEmptyList(){
+        List<ExpenseEntity> list = expenseRepository.findByDescriptionContaining("2");
+        Assertions.assertTrue(list.isEmpty());
+    }
 
 }

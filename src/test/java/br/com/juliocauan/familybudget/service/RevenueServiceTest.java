@@ -62,7 +62,7 @@ public class RevenueServiceTest extends TestContext{
     }
 
     @Test
-    public void givenDescription_WhenGet_ThenGetLikeDescription(){
+    public void givenDescription_WhenGet_ThenGetContainsDescription(){
         revenueRepository.save(entity);
         entity.setId(null);
         entity.setDescription("Test Description 2");

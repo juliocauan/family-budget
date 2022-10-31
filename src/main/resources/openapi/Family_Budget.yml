@@ -107,6 +107,31 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
 
+  /revenues/{year}/{month}:
+    get:
+      tags:
+        - "Revenue"
+      operationId: getRevenuesByMonth
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Successfully found all Revenue Entities"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RevenueDTO"
   /expenses:
     get:
       tags:

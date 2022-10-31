@@ -31,8 +31,10 @@ public class RevenuesControllerTest extends TestContext{
     private final String url = "/revenues";
     private final String urlId = "/revenues/{revenueId}";
     private final String urlInvalidId = "/revenues/0";
+    private final String urlByYearAndMonth = "/revenues/{year}/{month}";
     private final String duplicateErrorMessage = "RevenueEntity duplicate: Same description in the same month!";
     private final String notFoundErrorMessage = "Couldn't find RevenueEntity with id 0!";
+    private final LocalDate date = LocalDate.now();
     
     private RevenueDTO revenueDTO = new RevenueDTO();
 
@@ -43,7 +45,7 @@ public class RevenuesControllerTest extends TestContext{
 
     @BeforeEach
     public void setup() {
-        revenueDTO.date(LocalDate.now()).description("Test Description").quantity(new BigDecimal("12345.67"));
+        revenueDTO.date(date).description("Test Description").quantity(new BigDecimal("12345.67"));
         revenueRepository.deleteAll();
     }
 
@@ -119,6 +121,42 @@ public class RevenuesControllerTest extends TestContext{
         getMockMvc().perform(
             get(url)
                 .queryParam("description", "null"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void givenYearAndMonth_WhenGetByYearAndMonth_Then200() throws Exception {
+        saveRevenue(revenueDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void givenYearAndNotPresentMonth_WhenGetByYearAndMonth_Then200() throws Exception {
+        saveRevenue(revenueDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear(), (date.getMonthValue() + 1) % 12))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void givenMonthAndNotPresentYear_WhenGetByYearAndMonth_Then200() throws Exception {
+        saveRevenue(revenueDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear() + 1, date.getMonthValue()))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))

@@ -35,7 +35,7 @@ public class RevenuesController implements RevenuesApi{
     }
 
     @Override
-    public ResponseEntity<List<RevenueDTO>> _getRevenuesByMonth(Integer year, Integer month) {
+    public ResponseEntity<List<RevenueDTO>> _getRevenuesByMonthOfYear(Integer year, Integer month) {
         // TODO Auto-generated method stub
         return null;
     }

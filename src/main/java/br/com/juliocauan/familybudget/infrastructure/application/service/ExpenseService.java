@@ -30,6 +30,11 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     }
 
     @Override
+    public List<ExpenseEntity> getByMonthOfYear(int year, int month) {
+        return expenseRepository.findByMonthOfYear(year, month);
+    }
+
+    @Override
     public ExpenseEntity save(Expense entity) {
         if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
         return expenseRepository.save(

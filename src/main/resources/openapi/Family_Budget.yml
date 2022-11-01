@@ -228,6 +228,32 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
 
+  /expenses/{year}/{month}:
+    get:
+      tags:
+        - "Expense"
+      operationId: getExpensesByMonthOfYear
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Successfully found all Expense Entities"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExpenseGetDTO"
+  
 components:
   schemas:
     Error:

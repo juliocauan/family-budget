@@ -87,4 +87,22 @@ public class ExpenseRepositoryTest extends TestContext {
         Assertions.assertTrue(list.isEmpty());
     }
 
+    @Test
+    public void givenPresentMonthAndYear_WhenFindByMonthOfYear_ThenNotEmptyList(){
+        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear(), date.getMonthValue());
+        Assertions.assertFalse(list.isEmpty());
+    }
+
+    @Test
+    public void givenPresentMonthAndNotPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
+        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear() + 1, date.getMonthValue());
+        Assertions.assertTrue(list.isEmpty());
+    }
+
+    @Test
+    public void givenNotPresentMonthAndPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
+        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear(), (date.getMonthValue() + 1) % 12);
+        Assertions.assertTrue(list.isEmpty());
+    }
+
 }

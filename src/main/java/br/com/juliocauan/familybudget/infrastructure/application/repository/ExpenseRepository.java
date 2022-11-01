@@ -22,4 +22,11 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Integer>
     List<ExpenseEntity> findDuplicate(@Param("description") String description, @Param("month") int month, @Param("year") int year);
 
     List<ExpenseEntity> findByDescriptionContaining(String description);
+
+    @Query(value 
+            = "SELECT * FROM expenses "
+            + "WHERE EXTRACT(MONTH FROM outcome_date) = :month "
+            + "AND EXTRACT(YEAR FROM outcome_date) = :year",
+        nativeQuery = true)
+    List<ExpenseEntity> findByMonthOfYear(@Param("year") int year, @Param("month") int month);
 }

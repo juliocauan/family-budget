@@ -33,8 +33,10 @@ public class ExpensesControllerTest extends TestContext{
     private final String url = "/expenses";
     private final String urlId = "/expenses/{expenseId}";
     private final String urlInvalidId = "/expenses/0";
+    private final String urlByYearAndMonth = "/expenses/{year}/{month}";
     private final String duplicateErrorMessage = "ExpenseEntity duplicate: Same description in the same month!";
     private final String notFoundErrorMessage = "Couldn't find ExpenseEntity with id 0!";
+    private final LocalDate date = LocalDate.now();
 
     private ExpensePostDTO postDTO = new ExpensePostDTO();
     private ExpensePutDTO putDTO = new ExpensePutDTO();
@@ -46,8 +48,8 @@ public class ExpensesControllerTest extends TestContext{
 
     @BeforeEach
     public void setup() {
-        postDTO.date(LocalDate.now()).description("Post Test Description").quantity(new BigDecimal("12345.67")).category(CategoryEnum.EDUCATION);
-        putDTO.date(LocalDate.now()).description("Put Test Description").quantity(new BigDecimal("12345.67"));
+        postDTO.date(date).description("Post Test Description").quantity(new BigDecimal("12345.67")).category(CategoryEnum.EDUCATION);
+        putDTO.date(date).description("Put Test Description").quantity(new BigDecimal("12345.67"));
         expenseRepository.deleteAll();
     }
 
@@ -123,6 +125,42 @@ public class ExpensesControllerTest extends TestContext{
         getMockMvc().perform(
             get(url)
                 .queryParam("description", "null"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void givenYearAndMonth_WhenGetByMonthOfYear_Then200() throws Exception {
+        saveExpense(postDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void givenYearAndNotPresentMonth_WhenGetByMonthOfYear_Then200() throws Exception {
+        saveExpense(postDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear(), (date.getMonthValue() + 1) % 12))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void givenMonthAndNotPresentYear_WhenGetByMonthOfYear_Then200() throws Exception {
+        saveExpense(postDTO);
+        getMockMvc().perform(
+            get(urlByYearAndMonth, date.getYear() + 1, date.getMonthValue()))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))

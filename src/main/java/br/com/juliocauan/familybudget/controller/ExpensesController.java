@@ -37,6 +37,13 @@ public class ExpensesController implements ExpensesApi{
     }
 
     @Override
+    public ResponseEntity<List<ExpenseGetDTO>> _getExpensesByMonthOfYear(Integer year, Integer month) {
+        List<ExpenseGetDTO> response = new ArrayList<>();
+        expenseService.getByMonthOfYear(year, month).forEach(expense -> response.add(ExpenseMapper.entityToDto(expense)));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Override
     public ResponseEntity<ExpenseGetDTO> _getExpense(Integer expenseId) {
         ExpenseGetDTO response = ExpenseMapper.entityToDto(expenseService.findOne(expenseId));
         return ResponseEntity.status(HttpStatus.OK).body(response);

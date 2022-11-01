@@ -277,9 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SummaryDTO"
+                $ref: "#/components/schemas/SummaryDTO"
   
 components:
   schemas:
@@ -389,7 +387,7 @@ components:
           type: number
         balance:
           type: number
-        totalByCategory:
+        expensesByCategory:
           type: array
           items:
             type: number

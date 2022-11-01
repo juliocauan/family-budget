@@ -10,6 +10,7 @@ servers:
 tags:
   - name: Revenue
   - name: Expense
+  - name: Summary
 
 paths:
   /revenues:
@@ -254,6 +255,32 @@ paths:
                 items:
                   $ref: "#/components/schemas/ExpenseGetDTO"
   
+  /summary/{year}/{month}:
+    get:
+      tags:
+        - "Summary"
+      operationId: getSummaryByMonthOfYear
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Successfully got Summary of this month!"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SummaryDTO"
+  
 components:
   schemas:
     Error:
@@ -352,6 +379,20 @@ components:
         date:
           type: string
           format: date
+
+    SummaryDTO:
+      type: object
+      properties:
+        revenuesTotal:
+          type: number
+        expensesTotal:
+          type: number
+        balance:
+          type: number
+        totalByCategory:
+          type: array
+          items:
+            type: number
 
     RevenueId:
       $ref: "#/components/schemas/IntegerId"

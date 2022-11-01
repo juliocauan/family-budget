@@ -76,10 +76,10 @@ public class SummaryControllerTest extends TestContext{
             get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.revenuesTotal").value("1501.00"))
+            .andExpect(jsonPath("$.revenuesTotal").value("1501.0"))
             .andExpect(jsonPath("$.expensesTotal").value("600.69"))
             .andExpect(jsonPath("$.balance").value("900.31"))
-            .andExpect(jsonPath("$.expensesByCategory", hasSize(2)));
+            .andExpect(jsonPath("$.categoryExpenses", hasSize(2)));
     }
 
     @Test
@@ -88,10 +88,10 @@ public class SummaryControllerTest extends TestContext{
             get(urlByYearAndMonth, date.getYear(), 0))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.revenuesTotal").value("0.00"))
-            .andExpect(jsonPath("$.expensesTotal").value("0.00"))
-            .andExpect(jsonPath("$.balance").value("0.00"))
-            .andExpect(jsonPath("$.expensesByCategory", hasSize(0)));
+            .andExpect(jsonPath("$.revenuesTotal").value("0.0"))
+            .andExpect(jsonPath("$.expensesTotal").value("0.0"))
+            .andExpect(jsonPath("$.balance").value("0.0"))
+            .andExpect(jsonPath("$.categoryExpenses", hasSize(0)));
     }
 
     @Test
@@ -100,10 +100,10 @@ public class SummaryControllerTest extends TestContext{
             get(urlByYearAndMonth, 0, date.getMonthValue()))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.revenuesTotal").value("0.00"))
-            .andExpect(jsonPath("$.expensesTotal").value("0.00"))
-            .andExpect(jsonPath("$.balance").value("0.00"))
-            .andExpect(jsonPath("$.expensesByCategory", hasSize(0)));
+            .andExpect(jsonPath("$.revenuesTotal").value("0.0"))
+            .andExpect(jsonPath("$.expensesTotal").value("0.0"))
+            .andExpect(jsonPath("$.balance").value("0.0"))
+            .andExpect(jsonPath("$.categoryExpenses", hasSize(0)));
     }
 
 }

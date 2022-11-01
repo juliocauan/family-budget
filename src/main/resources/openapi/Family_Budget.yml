@@ -277,7 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SummaryDTO"
+                $ref: "#/components/schemas/Summary"
   
 components:
   schemas:
@@ -378,7 +378,7 @@ components:
           type: string
           format: date
 
-    SummaryDTO:
+    Summary:
       type: object
       properties:
         revenuesTotal:
@@ -387,10 +387,10 @@ components:
           type: number
         balance:
           type: number
-        expensesByCategory:
+        categoryExpenses:
           type: array
           items:
-            type: number
+            $ref: "#/components/schemas/CategoryExpense"
 
     RevenueId:
       $ref: "#/components/schemas/IntegerId"
@@ -411,6 +411,13 @@ components:
         - 'LEISURE'
         - 'UNFORESEEN'
         - 'OTHERS'
+    CategoryExpense:
+      type: object
+      properties:
+        category:
+          $ref: "#/components/schemas/CategoryEnum"
+        quantity:
+          type: number
 
   responses:
     NotFound:

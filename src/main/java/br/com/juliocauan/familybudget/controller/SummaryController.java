@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.openapi.api.SummaryApi;
-import br.com.juliocauan.openapi.model.SummaryDTO;
+import br.com.juliocauan.openapi.model.Summary;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 public class SummaryController implements SummaryApi{
     
     @Override
-    public ResponseEntity<SummaryDTO> _getSummaryByMonthOfYear(Integer year, Integer month) {
+    public ResponseEntity<Summary> _getSummaryByMonthOfYear(Integer year, Integer month) {
         // TODO Auto-generated method stub
         return null;
     }

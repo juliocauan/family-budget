@@ -85,4 +85,22 @@ public class RevenueRepositoryTest extends TestContext{
         Assertions.assertTrue(list.isEmpty());
     }
 
+    @Test
+    public void givenPresentMonthAndYear_WhenFindByMonthOfYear_ThenNotEmptyList(){
+        List<RevenueEntity> list = revenueRepository.findByMonthOfYear(date.getYear(), date.getMonthValue());
+        Assertions.assertFalse(list.isEmpty());
+    }
+
+    @Test
+    public void givenPresentMonthAndNotPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
+        List<RevenueEntity> list = revenueRepository.findByMonthOfYear(date.getYear() + 1, date.getMonthValue());
+        Assertions.assertTrue(list.isEmpty());
+    }
+
+    @Test
+    public void givenNotPresentMonthAndPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
+        List<RevenueEntity> list = revenueRepository.findByMonthOfYear(date.getYear(), (date.getMonthValue() + 1) % 12);
+        Assertions.assertTrue(list.isEmpty());
+    }
+
 }

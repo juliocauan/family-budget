@@ -36,8 +36,9 @@ public class RevenuesController implements RevenuesApi{
 
     @Override
     public ResponseEntity<List<RevenueDTO>> _getRevenuesByMonthOfYear(Integer year, Integer month) {
-        // TODO Auto-generated method stub
-        return null;
+        List<RevenueDTO> response = new ArrayList<>();
+        revenueService.getByMonthOfYear(year, month).forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override

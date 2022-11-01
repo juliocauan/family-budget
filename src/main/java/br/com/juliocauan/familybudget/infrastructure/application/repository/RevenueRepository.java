@@ -23,4 +23,11 @@ public interface RevenueRepository extends JpaRepository<RevenueEntity, Integer>
 
     List<RevenueEntity> findByDescriptionContaining(String description);
 
+    @Query(value 
+            = "SELECT * FROM revenues "
+            + "WHERE EXTRACT(MONTH FROM income_date) = :month "
+            + "AND EXTRACT(YEAR FROM income_date) = :year",
+        nativeQuery = true)
+    List<RevenueEntity> findByMonthOfYear(@Param("year") int year, @Param("month") int month);
+
 }

@@ -30,6 +30,11 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     }
 
     @Override
+    public List<RevenueEntity> getByMonthOfYear(int year, int month) {
+        return revenueRepository.findByMonthOfYear(year, month);
+    }
+
+    @Override
     public RevenueEntity save(Revenue entity) {
         if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
         return revenueRepository.save(

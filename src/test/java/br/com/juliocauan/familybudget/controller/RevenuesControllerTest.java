@@ -129,7 +129,7 @@ public class RevenuesControllerTest extends TestContext{
     }
 
     @Test
-    public void givenYearAndMonth_WhenGetByYearAndMonth_Then200() throws Exception {
+    public void givenYearAndMonth_WhenGetByMonthOfYear_Then200() throws Exception {
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
@@ -141,7 +141,7 @@ public class RevenuesControllerTest extends TestContext{
     }
 
     @Test
-    public void givenYearAndNotPresentMonth_WhenGetByYearAndMonth_Then200() throws Exception {
+    public void givenYearAndNotPresentMonth_WhenGetByMonthOfYear_Then200() throws Exception {
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), (date.getMonthValue() + 1) % 12))
@@ -153,7 +153,7 @@ public class RevenuesControllerTest extends TestContext{
     }
 
     @Test
-    public void givenMonthAndNotPresentYear_WhenGetByYearAndMonth_Then200() throws Exception {
+    public void givenMonthAndNotPresentYear_WhenGetByMonthOfYear_Then200() throws Exception {
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear() + 1, date.getMonthValue()))

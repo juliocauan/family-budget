@@ -16,7 +16,7 @@ public class SummaryController implements SummaryApi{
     private final SummaryService summaryService;
     
     @Override
-    public ResponseEntity<Summary> _getSummaryByMonthOfYear(Integer year, Integer month) {
+    public ResponseEntity<Summary> _getSummaryByMonth(Integer year, Integer month) {
         Summary response = summaryService.getMonthSummary(year, month);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

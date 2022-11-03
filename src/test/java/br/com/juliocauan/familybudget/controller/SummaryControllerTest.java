@@ -67,7 +67,7 @@ public class SummaryControllerTest extends TestContext{
     }
 
     @Test
-    public void givenPresentYearAndMonth_WhenGetSummaryByMonthOfYear_Then200() throws Exception{
+    public void givenPresentYearAndMonth_WhenGetSummaryByMonth_Then200() throws Exception{
         saveRevenue("Revenue Description 1", "1000.72");
         saveRevenue("Revenue Description 2", "500.28");
         saveExpense("Expense Description 1", "200.13", CategoryEnum.HOME);
@@ -83,7 +83,7 @@ public class SummaryControllerTest extends TestContext{
     }
 
     @Test
-    public void givenPresentYearAndNotPresentMonth_WhenGetSummaryByMonthOfYear_Then200() throws Exception{
+    public void givenPresentYearAndNotPresentMonth_WhenGetSummaryByMonth_Then200() throws Exception{
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), 0))
             .andDo(print())
@@ -95,7 +95,7 @@ public class SummaryControllerTest extends TestContext{
     }
 
     @Test
-    public void givenNotPresentYearAndPresentMonth_WhenGetSummaryByMonthOfYear_Then200() throws Exception{
+    public void givenNotPresentYearAndPresentMonth_WhenGetSummaryByMonth_Then200() throws Exception{
         getMockMvc().perform(
             get(urlByYearAndMonth, 0, date.getMonthValue()))
             .andDo(print())

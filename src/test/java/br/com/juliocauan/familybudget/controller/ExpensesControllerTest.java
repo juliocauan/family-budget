@@ -103,7 +103,11 @@ public class ExpensesControllerTest extends TestContext{
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)));
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$.[0].description").value(postDTO.getDescription()))
+            .andExpect(jsonPath("$.[0].quantity").value(postDTO.getQuantity()))
+            .andExpect(jsonPath("$.[0].date").value(postDTO.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)))
+            .andExpect(jsonPath("$.[0].category").value(postDTO.getCategory().getValue()));
     }
 
     @Test
@@ -116,7 +120,11 @@ public class ExpensesControllerTest extends TestContext{
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)));
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$.[0].description").value(postDTO.getDescription()))
+            .andExpect(jsonPath("$.[0].quantity").value(postDTO.getQuantity()))
+            .andExpect(jsonPath("$.[0].date").value(postDTO.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)))
+            .andExpect(jsonPath("$.[0].category").value(postDTO.getCategory().getValue()));
     }
 
     @Test
@@ -124,7 +132,7 @@ public class ExpensesControllerTest extends TestContext{
         saveExpense(postDTO);
         getMockMvc().perform(
             get(url)
-                .queryParam("description", "null"))
+                .queryParam("description", "not presente"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -133,7 +141,7 @@ public class ExpensesControllerTest extends TestContext{
     }
 
     @Test
-    public void givenYearAndMonth_WhenGetByMonthOfYear_Then200() throws Exception {
+    public void givenYearAndMonth_WhenGetByMonth_Then200() throws Exception {
         saveExpense(postDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
@@ -141,14 +149,18 @@ public class ExpensesControllerTest extends TestContext{
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)));
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$.[0].description").value(postDTO.getDescription()))
+            .andExpect(jsonPath("$.[0].quantity").value(postDTO.getQuantity()))
+            .andExpect(jsonPath("$.[0].date").value(postDTO.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)))
+            .andExpect(jsonPath("$.[0].category").value(postDTO.getCategory().getValue()));
     }
 
     @Test
-    public void givenYearAndNotPresentMonth_WhenGetByMonthOfYear_Then200() throws Exception {
+    public void givenYearAndNotPresentMonth_WhenGetByMonth_Then200() throws Exception {
         saveExpense(postDTO);
         getMockMvc().perform(
-            get(urlByYearAndMonth, date.getYear(), (date.getMonthValue() + 1) % 12))
+            get(urlByYearAndMonth, date.getYear(), 0))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -157,10 +169,10 @@ public class ExpensesControllerTest extends TestContext{
     }
 
     @Test
-    public void givenMonthAndNotPresentYear_WhenGetByMonthOfYear_Then200() throws Exception {
+    public void givenMonthAndNotPresentYear_WhenGetByMonth_Then200() throws Exception {
         saveExpense(postDTO);
         getMockMvc().perform(
-            get(urlByYearAndMonth, date.getYear() + 1, date.getMonthValue()))
+            get(urlByYearAndMonth, 0, date.getMonthValue()))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))

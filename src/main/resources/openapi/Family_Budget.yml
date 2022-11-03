@@ -112,7 +112,7 @@ paths:
     get:
       tags:
         - "Revenue"
-      operationId: getRevenuesByMonthOfYear
+      operationId: getRevenuesByMonth
       parameters:
         - name: year
           in: path
@@ -233,7 +233,7 @@ paths:
     get:
       tags:
         - "Expense"
-      operationId: getExpensesByMonthOfYear
+      operationId: getExpensesByMonth
       parameters:
         - name: year
           in: path
@@ -247,7 +247,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: "Successfully found all Expense Entities"
+          description: "Successfully found all Expense Entities by month"
           content:
             application/json:
               schema:
@@ -259,7 +259,7 @@ paths:
     get:
       tags:
         - "Summary"
-      operationId: getSummaryByMonthOfYear
+      operationId: getSummaryByMonth
       parameters:
         - name: year
           in: path

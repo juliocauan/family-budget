@@ -61,7 +61,7 @@ public class ExpenseRepositoryTest extends TestContext {
     public void givenOnlyDuplicatedDescriptionAndYear_WhenFindDuplicate_ThenEmptyList(){
         List<ExpenseEntity> list = expenseRepository.findDuplicate(
             entity.getDescription(),
-            (entity.getOutcomeDate().getMonthValue() + 1) % 12,
+            0,
             entity.getOutcomeDate().getYear());
         Assertions.assertTrue(list.isEmpty());
     }
@@ -71,7 +71,7 @@ public class ExpenseRepositoryTest extends TestContext {
         List<ExpenseEntity> list = expenseRepository.findDuplicate(
             entity.getDescription(),
             entity.getOutcomeDate().getMonthValue(),
-            entity.getOutcomeDate().getYear() + 1);
+            0);
         Assertions.assertTrue(list.isEmpty());
     }
     
@@ -83,7 +83,7 @@ public class ExpenseRepositoryTest extends TestContext {
         
     @Test
     public void givenNotPresentDescription_WhenFindByDescriptionContaining_ThenEmptyList(){
-        List<ExpenseEntity> list = expenseRepository.findByDescriptionContaining("2");
+        List<ExpenseEntity> list = expenseRepository.findByDescriptionContaining("not present description");
         Assertions.assertTrue(list.isEmpty());
     }
 
@@ -95,13 +95,13 @@ public class ExpenseRepositoryTest extends TestContext {
 
     @Test
     public void givenPresentMonthAndNotPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
-        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear() + 1, date.getMonthValue());
+        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(0, date.getMonthValue());
         Assertions.assertTrue(list.isEmpty());
     }
 
     @Test
     public void givenNotPresentMonthAndPresentYear_WhenFindByMonthOfYear_ThenEmptyList(){
-        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear(), (date.getMonthValue() + 1) % 12);
+        List<ExpenseEntity> list = expenseRepository.findByMonthOfYear(date.getYear(), 0);
         Assertions.assertTrue(list.isEmpty());
     }
 

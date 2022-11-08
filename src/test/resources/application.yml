@@ -10,7 +10,7 @@ spring:
     jpa:
         hibernate:
             ddl-auto: create
-        database-platform: org.hibernate.dialect.H2Dialect
+        database-platform: org.hibernate.dialect.PostgreSQL94Dialect
         open-in-view: false
         show-sql: false
         defer-datasource-initialization: false

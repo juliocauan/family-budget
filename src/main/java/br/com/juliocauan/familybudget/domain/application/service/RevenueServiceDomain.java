@@ -5,8 +5,8 @@ import java.util.List;
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.domain.application.service.base.BaseService;
 
-public abstract class RevenueServiceDomain<ID> extends BaseService<Revenue, ID> {
-    protected abstract Boolean hasDuplicate(Revenue entity);
-    protected abstract List<? extends Revenue> getAll(String description);
-    protected abstract List<? extends Revenue> getByMonthOfYear(int year, int month);
+public abstract class RevenueServiceDomain<I> extends BaseService<Revenue, I> {
+    protected abstract boolean hasDuplicate(Revenue entity);
+    protected abstract List<Revenue> getAll(String description);
+    protected abstract List<Revenue> getByMonthOfYear(int year, int month);
 }

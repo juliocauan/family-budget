@@ -30,20 +30,20 @@ public class RevenuesController implements RevenuesApi{
     @Override
     public ResponseEntity<List<RevenueDTO>> _getAllRevenues(@Valid String description) {
         List<RevenueDTO> response = new ArrayList<>();
-        revenueService.getAll(description).forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
+        revenueService.getAll(description).forEach(revenue -> response.add(RevenueMapper.domainToDto(revenue)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<List<RevenueDTO>> _getRevenuesByMonth(Integer year, Integer month) {
         List<RevenueDTO> response = new ArrayList<>();
-        revenueService.getByMonthOfYear(year, month).forEach(revenue -> response.add(RevenueMapper.entityToDto(revenue)));
+        revenueService.getByMonthOfYear(year, month).forEach(revenue -> response.add(RevenueMapper.domainToDto(revenue)));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<RevenueDTO> _getRevenue(Integer revenueId) {
-        RevenueDTO response = RevenueMapper.entityToDto(revenueService.findOne(revenueId));
+        RevenueDTO response = RevenueMapper.domainToDto(revenueService.findOne(revenueId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class RevenueEntity extends Revenue{
+public class RevenueEntity implements Revenue{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

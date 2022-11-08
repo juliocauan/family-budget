@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.familybudget.config.TestContext;
+import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
 import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
@@ -50,7 +51,8 @@ public class ExpenseServiceTest extends TestContext {
     @Test
     public void givenDuplicateExpense_WhenUpdate_ThenDuplicateError(){
         ExpenseEntity expense = expenseRepository.save(entity);
-        Assertions.assertThrows(DuplicatedEntityException.class, () -> expenseService.update(expense.getId(), expense));
+        Integer id = entity.getId();
+        Assertions.assertThrows(DuplicatedEntityException.class, () -> expenseService.update(id, expense));
     }
 
     @Test
@@ -72,7 +74,7 @@ public class ExpenseServiceTest extends TestContext {
         entity.setId(null);
         entity.setDescription("Test Description 2");
         expenseRepository.save(entity);
-        List<ExpenseEntity> list = expenseService.getAll(null);
+        List<Expense> list = expenseService.getAll(null);
         Assertions.assertEquals(2, list.size());
     }
 
@@ -82,7 +84,7 @@ public class ExpenseServiceTest extends TestContext {
         entity.setId(null);
         entity.setDescription("Test Description 2");
         expenseRepository.save(entity);
-        List<ExpenseEntity> list = expenseService.getAll("1");
+        List<Expense> list = expenseService.getAll("1");
         Assertions.assertEquals(1, list.size());
     }
   

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.domain.application.service.RevenueServiceDomain;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.RevenueMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import lombok.AllArgsConstructor;
@@ -20,18 +21,22 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     private final RevenueRepository revenueRepository;
     
     @Override
-    protected List<RevenueEntity> getAll() {
-        return revenueRepository.findAll();
+    protected List<Revenue> getAll() {
+        return RevenueMapper.entityListToDomainList(revenueRepository.findAll());
     }
 
     @Override
-    public List<RevenueEntity> getAll(String description) {
-        return description == null ? getAll() : revenueRepository.findByDescriptionContaining(description);
+    public List<Revenue> getAll(String description) {
+        return description == null ? getAll() : getByDescription(description);
+    }
+
+    private List<Revenue> getByDescription(String description) {
+        return RevenueMapper.entityListToDomainList(revenueRepository.findByDescriptionContaining(description));
     }
 
     @Override
-    public List<RevenueEntity> getByMonthOfYear(int year, int month) {
-        return revenueRepository.findByMonthOfYear(year, month);
+    public List<Revenue> getByMonthOfYear(int year, int month) {
+        return RevenueMapper.entityListToDomainList(revenueRepository.findByMonthOfYear(year, month));
     }
 
     @Override
@@ -68,7 +73,7 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     }
 
     @Override
-    protected Boolean hasDuplicate(Revenue entity) {
+    protected boolean hasDuplicate(Revenue entity) {
         List<RevenueEntity> list = revenueRepository.findDuplicate(
             entity.getDescription(),
             entity.getIncomeDate().getMonthValue(),

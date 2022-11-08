@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.familybudget.config.TestContext;
+import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
 import br.com.juliocauan.familybudget.infrastructure.application.service.RevenueService;
@@ -48,7 +49,8 @@ public class RevenueServiceTest extends TestContext{
     @Test
     public void givenDuplicateRevenue_WhenUpdate_ThenDuplicateError(){
         RevenueEntity revenue = revenueRepository.save(entity);
-        Assertions.assertThrows(DuplicatedEntityException.class, () -> revenueService.update(revenue.getId(), revenue));
+        Integer id = entity.getId();
+        Assertions.assertThrows(DuplicatedEntityException.class, () -> revenueService.update(id, revenue));
     }
 
     @Test
@@ -57,7 +59,7 @@ public class RevenueServiceTest extends TestContext{
         entity.setId(null);
         entity.setDescription("Test Description 2");
         revenueRepository.save(entity);
-        List<RevenueEntity> list = revenueService.getAll(null);
+        List<Revenue> list = revenueService.getAll(null);
         Assertions.assertEquals(2, list.size());
     }
 
@@ -67,7 +69,7 @@ public class RevenueServiceTest extends TestContext{
         entity.setId(null);
         entity.setDescription("Test Description 2");
         revenueRepository.save(entity);
-        List<RevenueEntity> list = revenueService.getAll("1");
+        List<Revenue> list = revenueService.getAll("1");
         Assertions.assertEquals(1, list.size());
     }
 

@@ -2,7 +2,7 @@ package br.com.juliocauan.familybudget.domain.application.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,14 +13,14 @@ import br.com.juliocauan.openapi.model.CategoryEnum;
 import br.com.juliocauan.openapi.model.CategoryExpense;
 import br.com.juliocauan.openapi.model.Summary;
 
-public abstract class SummaryServiceDomain<RID, EID> {
+public abstract class SummaryServiceDomain<R, E> {
     
-    protected abstract RevenueServiceDomain<RID> getRevenueService();
-    protected abstract ExpenseServiceDomain<EID> getExpenseService();
+    protected abstract RevenueServiceDomain<R> getRevenueService();
+    protected abstract ExpenseServiceDomain<E> getExpenseService();
 
     public final Summary getMonthSummary(int year, int month){
         Summary summary = new Summary().revenuesTotal(new BigDecimal("0.0")).expensesTotal(new BigDecimal("0.0"));
-        Map<CategoryEnum, BigDecimal> map = new HashMap<>();
+        Map<CategoryEnum, BigDecimal> map = new EnumMap<>(CategoryEnum.class);
         List<? extends Revenue> revenues = getRevenueService().getByMonthOfYear(year, month);
         List<? extends Expense> expenses = getExpenseService().getByMonthOfYear(year, month);
 

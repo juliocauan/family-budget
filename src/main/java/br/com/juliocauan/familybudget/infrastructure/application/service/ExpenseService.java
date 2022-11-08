@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.domain.application.service.ExpenseServiceDomain;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
+import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import lombok.AllArgsConstructor;
@@ -20,18 +21,18 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     private final ExpenseRepository expenseRepository;
 
     @Override
-    protected List<ExpenseEntity> getAll() {
-        return expenseRepository.findAll();
+    protected List<Expense> getAll() {
+        return ExpenseMapper.entityListToDomainList(expenseRepository.findAll());
     }
 
     @Override
-    public List<ExpenseEntity> getAll(String description) {
-        return description == null ? getAll() : expenseRepository.findByDescriptionContaining(description);
+    public List<Expense> getAll(String description) {
+        return description == null ? getAll() : getByDescription(description);
     }
 
     @Override
-    public List<ExpenseEntity> getByMonthOfYear(int year, int month) {
-        return expenseRepository.findByMonthOfYear(year, month);
+    public List<Expense> getByMonthOfYear(int year, int month) {
+        return ExpenseMapper.entityListToDomainList(expenseRepository.findByMonthOfYear(year, month));
     }
 
     @Override
@@ -69,7 +70,7 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     }
 
     @Override
-    protected Boolean hasDuplicate(Expense entity) {
+    protected boolean hasDuplicate(Expense entity) {
         List<ExpenseEntity> list = expenseRepository.findDuplicate(
             entity.getDescription(),
             entity.getOutcomeDate().getMonthValue(),
@@ -81,6 +82,10 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     @Override
     protected String getClassName() {
         return ExpenseEntity.class.getSimpleName();
+    }
+
+    private List<Expense> getByDescription(String description) {
+        return ExpenseMapper.entityListToDomainList(expenseRepository.findByDescriptionContaining(description));
     }
     
 }

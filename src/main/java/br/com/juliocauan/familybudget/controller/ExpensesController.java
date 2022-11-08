@@ -1,6 +1,5 @@
 package br.com.juliocauan.familybudget.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.service.ExpenseService;
 import br.com.juliocauan.openapi.api.ExpensesApi;
@@ -25,33 +25,36 @@ public class ExpensesController implements ExpensesApi{
 
     @Override
     public ResponseEntity<Void> _postExpense(@Valid ExpensePostDTO expenseDTO) {
-        expenseService.save(ExpenseMapper.dtoToEntity(expenseDTO));
+        Expense expense = ExpenseMapper.postDtoToDomain(expenseDTO);
+        expenseService.save(expense);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<List<ExpenseGetDTO>> _getAllExpenses(@Valid String description) {
-        List<ExpenseGetDTO> response = new ArrayList<>();
-        expenseService.getAll(description).forEach(expense -> response.add(ExpenseMapper.domainToDto(expense)));
+        List<Expense> expenses = expenseService.getAll(description);
+        List<ExpenseGetDTO> response = ExpenseMapper.domainListToGetDtoList(expenses);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<List<ExpenseGetDTO>> _getExpensesByMonth(Integer year, Integer month) {
-        List<ExpenseGetDTO> response = new ArrayList<>();
-        expenseService.getByMonthOfYear(year, month).forEach(expense -> response.add(ExpenseMapper.domainToDto(expense)));
+        List<Expense> expenses = expenseService.getByMonthOfYear(year, month);
+        List<ExpenseGetDTO> response = ExpenseMapper.domainListToGetDtoList(expenses);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<ExpenseGetDTO> _getExpense(Integer expenseId) {
-        ExpenseGetDTO response = ExpenseMapper.domainToDto(expenseService.findOne(expenseId));
+        Expense expense = expenseService.findOne(expenseId);
+        ExpenseGetDTO response = ExpenseMapper.domainToGetDto(expense);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<Void> _updateExpense(Integer expenseId, @Valid ExpensePutDTO expenseDTO) {
-        expenseService.update(expenseId, ExpenseMapper.dtoToEntity(expenseDTO));
+        Expense expense = ExpenseMapper.putDtoToDomain(expenseDTO);
+        expenseService.update(expenseId, expense);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

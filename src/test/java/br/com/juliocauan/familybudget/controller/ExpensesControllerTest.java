@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import br.com.juliocauan.familybudget.config.TestContext;
+import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.infrastructure.application.model.ExpenseEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.ExpenseMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.ExpenseRepository;
@@ -54,7 +55,9 @@ public class ExpensesControllerTest extends TestContext{
     }
 
     private ExpenseEntity saveExpense(ExpensePostDTO postDTO){
-        return expenseRepository.save(ExpenseMapper.dtoToEntity(postDTO));
+        Expense expense = ExpenseMapper.postDtoToDomain(postDTO);
+        ExpenseEntity entity = ExpenseMapper.domainToEntity(expense);
+        return expenseRepository.save(entity);
     }
 
     @Test

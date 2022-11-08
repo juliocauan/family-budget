@@ -29,8 +29,8 @@ public interface ExpenseMapper {
     static List<Expense> entityListToDomainList(List<ExpenseEntity> entityList){
         return entityList.stream().map(ExpenseMapper::entityToDomain).toList();
     }
-
-    static ExpenseGetDTO domainToDto(Expense entity){
+    
+    static ExpenseGetDTO domainToGetDto(Expense entity){
         return new ExpenseGetDTO()
             .description(entity.getDescription())
             .quantity(entity.getQuantity())
@@ -38,21 +38,44 @@ public interface ExpenseMapper {
             .category(entity.getCategory());
     }
 
-    static ExpenseEntity dtoToEntity(ExpensePostDTO dto){
-        return ExpenseEntity.builder()
-            .description(dto.getDescription())
-            .quantity(dto.getQuantity())
-            .outcomeDate(dto.getDate())
-            .category(dto.getCategory())
+    static List<ExpenseGetDTO> domainListToGetDtoList(List<Expense> domainList) {
+        return domainList.stream().map(ExpenseMapper::domainToGetDto).toList();
+    }
+
+    static ExpenseEntity domainToEntity(Expense expense){
+        return ExpenseEntity
+            .builder()
+                .category(expense.getCategory())
+                .description(expense.getDescription())
+                .outcomeDate(expense.getOutcomeDate())
+                .quantity(expense.getQuantity())
             .build();
     }
 
-    static ExpenseEntity dtoToEntity(ExpensePutDTO dto){
-        return ExpenseEntity.builder()
-            .description(dto.getDescription())
-            .quantity(dto.getQuantity())
-            .outcomeDate(dto.getDate())
-            .build();
+    static Expense postDtoToDomain(ExpensePostDTO dto){
+        return new Expense() {
+            @Override
+            public String getDescription() {return dto.getDescription();}
+            @Override
+            public BigDecimal getQuantity() {return dto.getQuantity();}
+            @Override
+            public LocalDate getOutcomeDate() {return dto.getDate();}
+            @Override
+            public CategoryEnum getCategory() {return dto.getCategory();}
+        };
+    }
+
+    static Expense putDtoToDomain(ExpensePutDTO dto){
+        return new Expense() {
+            @Override
+            public String getDescription() {return dto.getDescription();}
+            @Override
+            public BigDecimal getQuantity() {return dto.getQuantity();}
+            @Override
+            public LocalDate getOutcomeDate() {return dto.getDate();}
+            @Override
+            public CategoryEnum getCategory() {return null;}
+        };
     }
 
 }

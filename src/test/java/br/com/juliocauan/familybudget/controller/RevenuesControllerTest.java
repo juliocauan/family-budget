@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import br.com.juliocauan.familybudget.config.TestContext;
+import br.com.juliocauan.familybudget.domain.application.model.Revenue;
 import br.com.juliocauan.familybudget.infrastructure.application.model.RevenueEntity;
 import br.com.juliocauan.familybudget.infrastructure.application.model.mapper.RevenueMapper;
 import br.com.juliocauan.familybudget.infrastructure.application.repository.RevenueRepository;
@@ -50,7 +51,9 @@ public class RevenuesControllerTest extends TestContext{
     }
 
     private RevenueEntity saveRevenue(RevenueDTO revenueDTO){
-        return revenueRepository.save(RevenueMapper.dtoToEntity(revenueDTO));
+        Revenue revenue = RevenueMapper.dtoToDomain(revenueDTO);
+        RevenueEntity entity = RevenueMapper.domainToEntity(revenue);
+        return revenueRepository.save(entity);
     }
 
     @Test

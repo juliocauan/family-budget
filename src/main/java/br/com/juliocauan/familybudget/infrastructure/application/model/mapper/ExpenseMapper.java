@@ -26,20 +26,20 @@ public interface ExpenseMapper {
         };
     }
     
-    static List<Expense> entityListToDomainList(List<ExpenseEntity> entityList){
-        return entityList.stream().map(ExpenseMapper::entityToDomain).toList();
+    static List<Expense> entityListToDomainList(List<ExpenseEntity> list){
+        return list.stream().map(ExpenseMapper::entityToDomain).toList();
     }
     
-    static ExpenseGetDTO domainToGetDto(Expense entity){
+    static ExpenseGetDTO domainToGetDto(Expense expense){
         return new ExpenseGetDTO()
-            .description(entity.getDescription())
-            .quantity(entity.getQuantity())
-            .date(entity.getOutcomeDate())
-            .category(entity.getCategory());
+            .description(expense.getDescription())
+            .quantity(expense.getQuantity())
+            .date(expense.getOutcomeDate())
+            .category(expense.getCategory());
     }
 
-    static List<ExpenseGetDTO> domainListToGetDtoList(List<Expense> domainList) {
-        return domainList.stream().map(ExpenseMapper::domainToGetDto).toList();
+    static List<ExpenseGetDTO> domainListToGetDtoList(List<Expense> list) {
+        return list.stream().map(ExpenseMapper::domainToGetDto).toList();
     }
 
     static ExpenseEntity domainToEntity(Expense expense){

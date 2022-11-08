@@ -21,22 +21,38 @@ public interface RevenueMapper {
         };
     }
     
-    static List<Revenue> entityListToDomainList(List<RevenueEntity> entityList){
-        return entityList.stream().map(RevenueMapper::entityToDomain).toList();
+    static List<Revenue> entityListToDomainList(List<RevenueEntity> list){
+        return list.stream().map(RevenueMapper::entityToDomain).toList();
     }
 
-    static RevenueDTO domainToDto(Revenue entity){
+    static List<RevenueDTO> domainListToDtoList(List<Revenue> list){
+        return list.stream().map(RevenueMapper::domainToDto).toList();
+    }
+
+    static RevenueDTO domainToDto(Revenue revenue){
         return new RevenueDTO()
-            .description(entity.getDescription())
-            .quantity(entity.getQuantity())
-            .date(entity.getIncomeDate());
+            .description(revenue.getDescription())
+            .quantity(revenue.getQuantity())
+            .date(revenue.getIncomeDate());
     }
 
-    static RevenueEntity dtoToEntity(RevenueDTO dto){
-        return RevenueEntity.builder()
-            .description(dto.getDescription())
-            .quantity(dto.getQuantity())
-            .incomeDate(dto.getDate())
+    static Revenue dtoToDomain(RevenueDTO dto){
+        return new Revenue() {
+            @Override
+            public String getDescription() {return dto.getDescription();}
+            @Override
+            public BigDecimal getQuantity() {return dto.getQuantity();}
+            @Override
+            public LocalDate getIncomeDate() {return dto.getDate();}
+        };
+    }
+
+    static RevenueEntity domainToEntity(Revenue revenue) {
+        return RevenueEntity
+            .builder()
+                .description(revenue.getDescription())
+                .incomeDate(revenue.getIncomeDate())
+                .quantity(revenue.getQuantity())
             .build();
     }
     

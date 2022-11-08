@@ -10,7 +10,7 @@ import br.com.juliocauan.openapi.model.RevenueDTO;
 
 public interface RevenueMapper {
 
-    static Revenue entityToDomain(RevenueEntity entity){
+    private static Revenue entityToDomain(RevenueEntity entity){
         return new Revenue() {
             @Override
             public String getDescription() {return entity.getDescription();}

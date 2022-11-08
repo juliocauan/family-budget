@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.com.juliocauan.familybudget.domain.application.model.CategoryExpense;
 import br.com.juliocauan.familybudget.domain.application.model.Expense;
 import br.com.juliocauan.familybudget.domain.application.model.Revenue;
+import br.com.juliocauan.familybudget.domain.application.model.Summary;
 import br.com.juliocauan.openapi.model.CategoryEnum;
-import br.com.juliocauan.openapi.model.CategoryExpense;
-import br.com.juliocauan.openapi.model.Summary;
 
 public abstract class SummaryServiceDomain<R, E> {
     
@@ -19,10 +19,10 @@ public abstract class SummaryServiceDomain<R, E> {
     protected abstract ExpenseServiceDomain<E> getExpenseService();
 
     public final Summary getMonthSummary(int year, int month){
-        Summary summary = new Summary().revenuesTotal(new BigDecimal("0.0")).expensesTotal(new BigDecimal("0.0"));
+        Summary summary = new Summary();
         Map<CategoryEnum, BigDecimal> map = new EnumMap<>(CategoryEnum.class);
-        List<? extends Revenue> revenues = getRevenueService().getByMonthOfYear(year, month);
-        List<? extends Expense> expenses = getExpenseService().getByMonthOfYear(year, month);
+        List<Revenue> revenues = getRevenueService().getByMonthOfYear(year, month);
+        List<Expense> expenses = getExpenseService().getByMonthOfYear(year, month);
 
         revenues.forEach(revenue -> {
             BigDecimal quantity = sum(summary.getRevenuesTotal(), revenue.getQuantity());
@@ -41,7 +41,7 @@ public abstract class SummaryServiceDomain<R, E> {
         });
 
         summary.setCategoryExpenses(mapToCategoryExpensesList(map));
-        summary.balance(summary.getRevenuesTotal().subtract(summary.getExpensesTotal()));
+        summary.setBalance(summary.getRevenuesTotal().subtract(summary.getExpensesTotal()));
         return summary;
     }
 
@@ -50,7 +50,7 @@ public abstract class SummaryServiceDomain<R, E> {
         Set<CategoryEnum> usedCategories = map.keySet();
         usedCategories.forEach(category -> {
             BigDecimal quantity = map.get(category);
-            CategoryExpense categoryExpense = new CategoryExpense().category(category).quantity(quantity);
+            CategoryExpense categoryExpense = new CategoryExpense(category, quantity);
             categoryExpenses.add(categoryExpense);
         });
         return categoryExpenses;

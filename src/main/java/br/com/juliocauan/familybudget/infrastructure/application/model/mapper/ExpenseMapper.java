@@ -13,7 +13,7 @@ import br.com.juliocauan.openapi.model.ExpensePutDTO;
 
 public interface ExpenseMapper {
 
-    static Expense entityToDomain(ExpenseEntity entity){
+    private static Expense entityToDomain(ExpenseEntity entity){
         return new Expense() {
             @Override
             public String getDescription() {return entity.getDescription();}

@@ -14,7 +14,6 @@ import br.com.juliocauan.familybudget.infrastructure.application.repository.Reve
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import lombok.AllArgsConstructor;
 
-//TODO review this Service
 @Service
 @AllArgsConstructor
 public class RevenueService extends RevenueServiceDomain<Integer> {
@@ -41,36 +40,30 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     }
 
     @Override
-    public RevenueEntity save(Revenue entity) {
-        if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        return revenueRepository.save(
-            RevenueEntity.builder()
-            .description(entity.getDescription())
-            .incomeDate(entity.getIncomeDate())
-            .quantity(entity.getQuantity())
-            .build()
-        );
+    public Revenue save(Revenue revenue) {
+        if(hasDuplicate(revenue)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
+        RevenueEntity entity = RevenueMapper.domainToEntity(revenue);
+        return revenueRepository.save(entity);
     }
 
     @Override
-    public RevenueEntity findOne(Integer id) {
-        return revenueRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException(getNotFoundExceptionMessage(id)));
+    public Revenue findOne(Integer id) {
+        return findEntity(id);
     }
 
     @Override
-    public RevenueEntity update(Integer oldEntityId, Revenue newEntity) {
-        if(hasDuplicate(newEntity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        RevenueEntity revenue = findOne(oldEntityId);
-        revenue.setDescription(newEntity.getDescription());
-        revenue.setIncomeDate(newEntity.getIncomeDate());
-        revenue.setQuantity(newEntity.getQuantity());
+    public Revenue update(Integer oldEntityId, Revenue newRevenue) {
+        if(hasDuplicate(newRevenue)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
+        RevenueEntity revenue = findEntity(oldEntityId);
+        revenue.setDescription(newRevenue.getDescription());
+        revenue.setIncomeDate(newRevenue.getIncomeDate());
+        revenue.setQuantity(newRevenue.getQuantity());
         return revenueRepository.save(revenue);
     }
 
     @Override
     public void delete(Integer id) {
-        revenueRepository.delete(findOne(id));
+        revenueRepository.delete(findEntity(id));
     }
 
     @Override
@@ -86,6 +79,11 @@ public class RevenueService extends RevenueServiceDomain<Integer> {
     @Override
     protected String getClassName() {
         return RevenueEntity.class.getSimpleName();
+    }
+
+    private final RevenueEntity findEntity(Integer id) {
+        return revenueRepository.findById(id).orElseThrow(() ->
+            new EntityNotFoundException(getNotFoundExceptionMessage(id)));
     }
     
 }

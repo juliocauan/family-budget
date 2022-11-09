@@ -14,7 +14,6 @@ import br.com.juliocauan.familybudget.infrastructure.application.repository.Expe
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import lombok.AllArgsConstructor;
 
-//TODO review this Service
 @Service
 @AllArgsConstructor
 public class ExpenseService extends ExpenseServiceDomain<Integer>{
@@ -37,45 +36,39 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
     }
 
     @Override
-    public ExpenseEntity save(Expense entity) {
-        if(hasDuplicate(entity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        return expenseRepository.save(
-            ExpenseEntity.builder()
-            .description(entity.getDescription())
-            .outcomeDate(entity.getOutcomeDate())
-            .quantity(entity.getQuantity())
-            .category(checkCategory(entity.getCategory()))
-            .build()
-        );
+    public Expense save(Expense expense) {
+        if(hasDuplicate(expense)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
+        ExpenseEntity entity = ExpenseMapper.domainToEntity(expense);
+        entity.setCategory(checkCategory(expense.getCategory()));
+        return expenseRepository.save(entity);
     }
 
     @Override
-    public ExpenseEntity findOne(Integer id) {
-        return expenseRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException(getNotFoundExceptionMessage(id)));
+    public Expense findOne(Integer id) {
+        return findEntity(id);
     }
 
     @Override
-    public ExpenseEntity update(Integer oldEntityId, Expense newEntity) {
-        if(hasDuplicate(newEntity)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
-        ExpenseEntity expense = findOne(oldEntityId);
-        expense.setDescription(newEntity.getDescription());
-        expense.setOutcomeDate(newEntity.getOutcomeDate());
-        expense.setQuantity(newEntity.getQuantity());
+    public Expense update(Integer oldEntityId, Expense newExpense) {
+        if(hasDuplicate(newExpense)) throw new DuplicatedEntityException(getDuplicatedExceptionMessage());
+        ExpenseEntity expense = findEntity(oldEntityId);
+        expense.setDescription(newExpense.getDescription());
+        expense.setOutcomeDate(newExpense.getOutcomeDate());
+        expense.setQuantity(newExpense.getQuantity());
         return expenseRepository.save(expense);
     }
 
     @Override
     public void delete(Integer id) {
-        expenseRepository.delete(findOne(id));
+        expenseRepository.delete(findEntity(id));
     }
 
     @Override
-    protected boolean hasDuplicate(Expense entity) {
+    protected boolean hasDuplicate(Expense expense) {
         List<ExpenseEntity> list = expenseRepository.findDuplicate(
-            entity.getDescription(),
-            entity.getOutcomeDate().getMonthValue(),
-            entity.getOutcomeDate().getYear()
+            expense.getDescription(),
+            expense.getOutcomeDate().getMonthValue(),
+            expense.getOutcomeDate().getYear()
         );
         return !list.isEmpty();
     }
@@ -85,8 +78,13 @@ public class ExpenseService extends ExpenseServiceDomain<Integer>{
         return ExpenseEntity.class.getSimpleName();
     }
 
-    private List<Expense> getByDescription(String description) {
+    private final List<Expense> getByDescription(String description) {
         return ExpenseMapper.entityListToDomainList(expenseRepository.findByDescriptionContaining(description));
+    }
+
+    private final ExpenseEntity findEntity(Integer id){
+        return expenseRepository.findById(id).orElseThrow(() ->
+            new EntityNotFoundException(getNotFoundExceptionMessage(id)));
     }
     
 }

@@ -57,14 +57,14 @@ public class ExpenseServiceTest extends TestContext {
 
     @Test
     public void givenCategory_WhenSave_ThenUseGivenCategory(){
-        ExpenseEntity expense = expenseService.save(entity);
+        Expense expense = expenseService.save(entity);
         Assertions.assertEquals(CategoryEnum.LEISURE, expense.getCategory());
     }
     
     @Test
     public void givenNoCategory_WhenSave_ThenUseDefaultCategory(){
         entity.setCategory(null);
-        ExpenseEntity expense = expenseService.save(entity);
+        Expense expense = expenseService.save(entity);
         Assertions.assertEquals(CategoryEnum.OTHERS, expense.getCategory());
     }
 

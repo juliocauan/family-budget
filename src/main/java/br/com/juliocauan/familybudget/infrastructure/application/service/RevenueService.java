@@ -14,6 +14,7 @@ import br.com.juliocauan.familybudget.infrastructure.application.repository.Reve
 import br.com.juliocauan.familybudget.infrastructure.handler.exception.DuplicatedEntityException;
 import lombok.AllArgsConstructor;
 
+//TODO review this Service
 @Service
 @AllArgsConstructor
 public class RevenueService extends RevenueServiceDomain<Integer> {

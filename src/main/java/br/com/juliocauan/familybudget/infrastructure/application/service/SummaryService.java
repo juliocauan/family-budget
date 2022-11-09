@@ -7,6 +7,7 @@ import br.com.juliocauan.familybudget.domain.application.service.RevenueServiceD
 import br.com.juliocauan.familybudget.domain.application.service.SummaryServiceDomain;
 import lombok.AllArgsConstructor;
 
+//TODO review this Service
 @Service
 @AllArgsConstructor
 public class SummaryService extends SummaryServiceDomain<Integer, Integer>{

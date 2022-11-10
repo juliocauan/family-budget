@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS fb.revenues;
 DROP TABLE IF EXISTS fb.expenses;
 DROP TABLE IF EXISTS fb.users;
 DROP TABLE IF EXISTS fb.roles;
+DROP TABLE IF EXISTS fb.users_roles;
 
 CREATE TABLE fb.revenues(
     id SERIAL PRIMARY KEY,
@@ -30,6 +31,12 @@ CREATE TABLE fb.users(
 CREATE TABLE fb.roles(
     id SMALLSERIAL PRIMARY KEY,
     name VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE fb.users_roles(
+    user_id UUID REFERENCES fb.users(id),
+    role_id SMALLINT REFERENCES fb.roles(id),
+    PRIMARY KEY(user_id, role_id)
 );
 
 INSERT INTO fb.revenues(description, quantity, income_date) VALUES('Salário', 1383.14, '2022-09-15');

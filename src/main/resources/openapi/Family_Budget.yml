@@ -391,6 +391,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CategoryExpenseDTO"
+    CategoryExpenseDTO:
+      type: object
+      properties:
+        category:
+          $ref: "#/components/schemas/CategoryEnum"
+        quantity:
+          type: number
 
     RevenueId:
       $ref: "#/components/schemas/IntegerId"
@@ -411,13 +418,6 @@ components:
         - 'LEISURE'
         - 'UNFORESEEN'
         - 'OTHERS'
-    CategoryExpenseDTO:
-      type: object
-      properties:
-        category:
-          $ref: "#/components/schemas/CategoryEnum"
-        quantity:
-          type: number
 
   responses:
     NotFound:

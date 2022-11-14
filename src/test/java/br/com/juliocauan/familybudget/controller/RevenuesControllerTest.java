@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -62,7 +61,7 @@ public class RevenuesControllerTest extends TestContext{
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isCreated());
     }
 
@@ -73,7 +72,7 @@ public class RevenuesControllerTest extends TestContext{
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("402"))
             .andExpect(jsonPath("$.fieldList", hasSize(3)));
@@ -86,7 +85,7 @@ public class RevenuesControllerTest extends TestContext{
             post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("403"))
             .andExpect(jsonPath("$.message").value(duplicateErrorMessage))
@@ -98,7 +97,7 @@ public class RevenuesControllerTest extends TestContext{
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(url))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -114,7 +113,7 @@ public class RevenuesControllerTest extends TestContext{
         getMockMvc().perform(
             get(url)
                 .queryParam("description", revenueDTO.getDescription()))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -130,7 +129,7 @@ public class RevenuesControllerTest extends TestContext{
         getMockMvc().perform(
             get(url)
                 .queryParam("description", "not present"))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -142,7 +141,7 @@ public class RevenuesControllerTest extends TestContext{
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -157,7 +156,7 @@ public class RevenuesControllerTest extends TestContext{
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), 0))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -169,7 +168,7 @@ public class RevenuesControllerTest extends TestContext{
         saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlByYearAndMonth, 0, date.getMonthValue()))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray())
@@ -181,7 +180,7 @@ public class RevenuesControllerTest extends TestContext{
         RevenueEntity entity = saveRevenue(revenueDTO);
         getMockMvc().perform(
             get(urlId, entity.getId()))
-            .andDo(print())
+            
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.description").value(revenueDTO.getDescription()))
@@ -193,7 +192,7 @@ public class RevenuesControllerTest extends TestContext{
     public void givenInvalidRevenueId_WhenGetById_Then404() throws Exception {
         getMockMvc().perform(
             get(urlInvalidId))
-            .andDo(print())
+            
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.code").value("301"))
             .andExpect(jsonPath("$.message").value(notFoundErrorMessage))
@@ -208,7 +207,7 @@ public class RevenuesControllerTest extends TestContext{
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isNoContent());
     }
 
@@ -220,7 +219,7 @@ public class RevenuesControllerTest extends TestContext{
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("402"))
             .andExpect(jsonPath("$.fieldList", hasSize(3)));
@@ -233,7 +232,7 @@ public class RevenuesControllerTest extends TestContext{
             put(urlId, entity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("403"))
             .andExpect(jsonPath("$.message").value(duplicateErrorMessage))
@@ -246,7 +245,7 @@ public class RevenuesControllerTest extends TestContext{
             put(urlInvalidId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(revenueDTO)))
-            .andDo(print())
+            
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.code").value("301"))
             .andExpect(jsonPath("$.message").value(notFoundErrorMessage))
@@ -258,7 +257,7 @@ public class RevenuesControllerTest extends TestContext{
         RevenueEntity entity = saveRevenue(revenueDTO);
         getMockMvc().perform(
             delete(urlId, entity.getId()))
-            .andDo(print())
+            
             .andExpect(status().isOk());
     }
     
@@ -266,7 +265,7 @@ public class RevenuesControllerTest extends TestContext{
     public void givenInvalidRevenueId_WhenDelete_Then404() throws Exception {
         getMockMvc().perform(
             delete(urlInvalidId))
-            .andDo(print())
+            
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.code").value("301"))
             .andExpect(jsonPath("$.message").value(notFoundErrorMessage))

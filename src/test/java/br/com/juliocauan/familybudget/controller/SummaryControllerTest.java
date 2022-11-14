@@ -2,7 +2,6 @@ package br.com.juliocauan.familybudget.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -74,7 +73,7 @@ public class SummaryControllerTest extends TestContext{
         saveExpense("Expense Description 2", "400.56", CategoryEnum.TRANSPORT);
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), date.getMonthValue()))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.revenuesTotal").value("1501.0"))
             .andExpect(jsonPath("$.expensesTotal").value("600.69"))
@@ -86,7 +85,7 @@ public class SummaryControllerTest extends TestContext{
     public void givenPresentYearAndNotPresentMonth_WhenGetSummaryByMonth_Then200() throws Exception{
         getMockMvc().perform(
             get(urlByYearAndMonth, date.getYear(), 0))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.revenuesTotal").value("0.0"))
             .andExpect(jsonPath("$.expensesTotal").value("0.0"))
@@ -98,7 +97,7 @@ public class SummaryControllerTest extends TestContext{
     public void givenNotPresentYearAndPresentMonth_WhenGetSummaryByMonth_Then200() throws Exception{
         getMockMvc().perform(
             get(urlByYearAndMonth, 0, date.getMonthValue()))
-            .andDo(print())
+            
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.revenuesTotal").value("0.0"))
             .andExpect(jsonPath("$.expensesTotal").value("0.0"))
